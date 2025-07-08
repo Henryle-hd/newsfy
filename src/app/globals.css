@@ -24,3 +24,46 @@ body {
   color: var(--foreground);
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+.description_from_user{
+  font-size: 16px;
+  display: flex;
+  flex-direction: column;
+}
+.description_from_user p{
+  margin-bottom: 2em;
+  margin-top: 1em;
+}
+.description_from_user{
+  ul, ol {
+    padding-left: 1.5rem;
+    margin: 0;
+  }
+  
+  ul {
+    list-style-type: disc;
+  }
+  
+  ol {
+    list-style-type: decimal;
+  }
+  
+  li {
+    margin-bottom: 0.5rem;
+    line-height: 1.5;
+  }
+  
+  li:last-child {
+    margin-bottom: 0;
+  }
+}
+ 
+.description_from_user ul p{
+  margin-bottom: 0;
+  margin-top: 0;
+}
+.description_from_user ol p{
+  margin-bottom: 0;
+  margin-top: 0;
+}
