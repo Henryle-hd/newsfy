@@ -32,6 +32,7 @@ export default function NewsNavbar() {
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
   };
+ if (pathname.startsWith("/dashboard")) return
 
   return (
     <nav className={`fixed w-full z-50 transition-all duration-500 ${
@@ -46,7 +47,7 @@ export default function NewsNavbar() {
           {/* Logo */}
           <div className="flex-shrink-0 flex items-center">
             <div className="text-white font-bold text-sm bg-black/80 px-2 py-1 rounded-md backdrop-blur-sm border border-white/10 hover:bg-opacity-30 transition-all duration-300 shadow-sm">
-              <span className="text-base font-extrabold tracking-tight">NFY<span className="text-yellow-400">.</span></span>
+              <span className="text-base font-extrabold tracking-tight">N<span className="text-red-600">.</span></span>
             </div>
           </div>
 

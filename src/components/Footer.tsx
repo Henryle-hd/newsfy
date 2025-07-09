@@ -1,7 +1,10 @@
+"use client"
 import React from 'react';
 import { Facebook, Twitter, Youtube, Instagram } from 'lucide-react';
+import { usePathname } from 'next/navigation';
 
 export default function NewsfyFooter() {
+  if (usePathname().startsWith("/dashboard")) return
   return (
     <footer className="bg-gradient-to-r from-gray-900 via-black to-gray-900 text-white py-6 border-t border-gray-800">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
