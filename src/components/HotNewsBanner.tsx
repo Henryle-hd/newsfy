@@ -74,7 +74,7 @@ export default function HotNewsTicker() {
         <div className="flex items-center">
           
           {/* Hot News Label */}
-          <div className="flex items-center space-x-2 bg-black px-3 py-2 mr-4 flex-shrink-0 rounded-l-xs">
+          <div className="flex items-center space-x-2 bg-black px-3 py-2 mr-4 flex-shrink-0">
             <Flame className="w-4 h-4 text-yellow-300 animate-pulse" />
             <span className="text-sm  text-gray-50">Hot News</span>
           </div>

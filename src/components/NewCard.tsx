@@ -9,10 +9,11 @@ interface ArticleProp{
     title:string;
     image:string;
     pageName:string;
+    isFirst:boolean;
 }
 
 
-export default function NewsCardComp({id,day, month, title, image}: ArticleProp) {
+export default function NewsCardComp({id,day, month, title, image, isFirst=false}: ArticleProp) {
     const months = {
         1: 'Jan',
         2: 'Feb',
@@ -44,8 +45,8 @@ export default function NewsCardComp({id,day, month, title, image}: ArticleProp)
         </div>
         {/* Content */}
         <div className="px-6 py-6 sm:p-8 sm:pb-6 bg-white rounded-md overflow-hidden hover:shadow-sm transition-shadow duration-300 w-[93%] sm:w-[96%] mx-auto -mt-10 z-10">
-        <h3 className="text-[13px] sm:text-sm font-bold text-gray-900 mb-2 leading-tight line-clamp-3 pb-4  border-b-2 border-gray-200">{title}</h3>
-        <div className="text-gray-600 text-[10px] font-semibold flex items-center hover:text-red-600 transition-colors">
+        <h3 className={`text-[13px] ${isFirst?"sm:text-[1.4em]":"sm:text-sm"}  font-bold text-gray-900 mb-2 leading-tight line-clamp-3 pb-4  border-b-2 border-gray-200`}>{title}</h3>
+        <div className={"text-gray-600 text-[10px] font-semibold flex items-center hover:text-red-600 transition-colors"}>
             <svg className="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
                 <path d="M6.5 3L14 8.5L6.5 14V3z"/>
             </svg>

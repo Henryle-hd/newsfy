@@ -275,6 +275,7 @@ interface UserType{
                 title={news.title}
                 image={news.image}
                 pageName={news.pageName}
+                isFirst={false}
               />
             ))}
           </div>

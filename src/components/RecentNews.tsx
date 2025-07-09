@@ -18,7 +18,7 @@ export default function RecentNews() {
   }, [])
 
   const recentNews = [
-    {id: '1', day: '1', month: '1', title: 'Tanzania yafuzu Afcon 2024 baada ya miaka 39,Tanzania yafuzu Afcon 2024 baada ya miaka 39, Tanzania yafuzu Afcon 2024 baada ya miaka 39', image: '/img.webp', pageName: 'habari'},
+    {id: '1', day: '1', month: '1', title: 'Tanzania yafuzu Afcon 2024 baada ya miaka 39', image: '/img.webp', pageName: 'habari'},
     {id: '2', day: '2', month: '1', title: 'Serikali yatoa maelekezo mapya kuhusu usajili wa simu', image: '/img.webp', pageName: 'habari'},
     {id: '3', day: '3', month: '1', title: 'Rais Samia azindua mradi mkubwa wa maji Dar', image: '/img.webp', pageName: 'habari'},
     {id: '4', day: '4', month: '1', title: 'Simba watwaa ubingwa wa ligi kuu Tanzania', image: '/img.webp', pageName: 'habari'},
@@ -35,11 +35,11 @@ export default function RecentNews() {
   ]
 
   return (
-    <div className="container mx-auto px-4 py-8 pt-21">
+    <div className="container mx-auto px-4 py-8 pt-21 md:pl-7">
       <div className="flex flex-col lg:flex-row gap-8 ">
         <div className="lg:w-3/4">
         <HotNewsTicker />
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 ">
             <div className="md:col-span-2">
               <NewsCardComp
                 key={recentNews[0].id}
@@ -49,6 +49,7 @@ export default function RecentNews() {
                 title={recentNews[0].title}
                 image={recentNews[0].image}
                 pageName={recentNews[0].pageName}
+                isFirst={true}
               />
             </div>
             <div className="md:col-span-1">
@@ -60,6 +61,7 @@ export default function RecentNews() {
                 title={recentNews[1].title}
                 image={recentNews[1].image}
                 pageName={recentNews[1].pageName}
+                isFirst={false}
               />
             </div>
             
@@ -72,6 +74,7 @@ export default function RecentNews() {
                 title={news.title}
                 image={news.image}
                 pageName={news.pageName}
+                isFirst={false}
               />
             ))}
           </div>
