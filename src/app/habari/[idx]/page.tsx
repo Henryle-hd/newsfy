@@ -143,7 +143,7 @@ interface UserType{
         <div className="flex-1 max-w-3xl mx-auto">
             <HotNewsTicker />
             {/* Article Title */}
-          <h1 className="mt-5 mb-2 text-xl sm:text-3xl font-black text-gray-800 tracking-wide font-mono text-center">
+          <h1 className="mt-5 mb-2 text-xl sm:text-3xl font-black text-gray-800 tracking-wide text-center">
             {news.title}
           </h1>
 

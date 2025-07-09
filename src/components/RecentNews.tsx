@@ -1,11 +1,24 @@
-import React from 'react'
+"use client"
+
+import React, { useState, useEffect } from 'react'
 import NewsCardComp from './NewCard'
 import PopularSideBar from './PopularSideBar'
 import HotNewsTicker from './HotNewsBanner'
 
 export default function RecentNews() {
+  const [isMobile, setIsMobile] = useState(false)
+
+  useEffect(() => {
+    const checkMobile = () => {
+      setIsMobile(window.innerWidth < 768)
+    }
+    checkMobile()
+    window.addEventListener('resize', checkMobile)
+    return () => window.removeEventListener('resize', checkMobile)
+  }, [])
+
   const recentNews = [
-    {id: '1', day: '1', month: '1', title: 'Tanzania yafuzu Afcon 2024 baada ya miaka 39', image: '/img.webp', pageName: 'habari'},
+    {id: '1', day: '1', month: '1', title: 'Tanzania yafuzu Afcon 2024 baada ya miaka 39,Tanzania yafuzu Afcon 2024 baada ya miaka 39, Tanzania yafuzu Afcon 2024 baada ya miaka 39', image: '/img.webp', pageName: 'habari'},
     {id: '2', day: '2', month: '1', title: 'Serikali yatoa maelekezo mapya kuhusu usajili wa simu', image: '/img.webp', pageName: 'habari'},
     {id: '3', day: '3', month: '1', title: 'Rais Samia azindua mradi mkubwa wa maji Dar', image: '/img.webp', pageName: 'habari'},
     {id: '4', day: '4', month: '1', title: 'Simba watwaa ubingwa wa ligi kuu Tanzania', image: '/img.webp', pageName: 'habari'},
@@ -13,18 +26,12 @@ export default function RecentNews() {
     {id: '6', day: '6', month: '1', title: 'Wakulima waanza kunufaika na mradi wa kilimo', image: '/img.webp', pageName: 'habari'},
     {id: '7', day: '7', month: '1', title: 'Sekta ya utalii yaongeza mapato ya taifa', image: '/img.webp', pageName: 'habari'},
     {id: '8', day: '8', month: '1', title: 'Vijana watakiwa kutumia fursa za mikopo', image: '/img.webp', pageName: 'habari'},
-    {id: '9', day: '9', month: '1', title: 'Vijana watakiwa kutumia fursa za mikopo', image: '/img.webp', pageName: 'habari'},
-    {id: '10', day: '10', month: '1', title: 'Vijana watakiwa kutumia fursa za mikopo', image: '/img.webp', pageName: 'habari'},
-    {id: '11', day: '11', month: '1', title: 'Vijana watakiwa kutumia fursa za mikopo', image: '/img.webp', pageName: 'habari'},
-    {id: '12', day: '12', month: '1', title: 'Vijana watakiwa kutumia fursa za mikopo', image: '/img.webp', pageName: 'habari'},
   ]
 
   const popularNews = [
     {title: 'Yanga Yaanza Mazungumzo na Dickson Job Kuhusu Mkataba Mpya', image: '/d.webp'},
     {title: 'Mabadiliko ya hali ya hewa yaathiri kilimo', image: '/img.webp'},
     {title: 'Timu ya Taifa yapanda nafasi FIFA', image: '/d.webp'},
-    {title: 'Serikali yatangaza nafasi mpya za ajira', image: '/img.webp'},
-    {title: 'Wanafunzi wafanya vizuri mtihani wa kidato cha nne', image: '/d.webp'}
   ]
 
   return (
@@ -33,7 +40,30 @@ export default function RecentNews() {
         <div className="lg:w-3/4">
         <HotNewsTicker />
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2">
-            {recentNews.map((news) => (
+            <div className="md:col-span-2">
+              <NewsCardComp
+                key={recentNews[0].id}
+                id={recentNews[0].id}
+                day={recentNews[0].day}
+                month={recentNews[0].month}
+                title={recentNews[0].title}
+                image={recentNews[0].image}
+                pageName={recentNews[0].pageName}
+              />
+            </div>
+            <div className="md:col-span-1">
+              <NewsCardComp
+                key={recentNews[1].id}
+                id={recentNews[1].id}
+                day={recentNews[1].day}
+                month={recentNews[1].month}
+                title={recentNews[1].title}
+                image={recentNews[1].image}
+                pageName={recentNews[1].pageName}
+              />
+            </div>
+            
+            {recentNews.slice(2, isMobile ? 4 : recentNews.length).map((news) => (
               <NewsCardComp
                 key={news.id}
                 id={news.id}
