@@ -95,10 +95,10 @@ export default function HotNewsTicker() {
                 </Link>
                 <div className="flex items-center space-x-2 text-xs text-gray-500">
                   <span>{hotNews[currentIndex].category}</span>
-                  <span>•</span>
-                  <span>{new Date(hotNews[currentIndex].createdAt).toLocaleTimeString()}</span>
-                  <span>•</span>
-                  <span>{hotNews[currentIndex].views} views</span>
+                  <span className='md:hidden'>•</span>
+                  <span className='md:hidden'>{new Date(hotNews[currentIndex].createdAt).toLocaleTimeString()}</span>
+                  <span className='md:hidden'>•</span>
+                  <span className='md:hidden'>{hotNews[currentIndex].views} views</span>
                 </div>
               </div>
             </div>

@@ -27,6 +27,8 @@ export default function NewsNavbar() {
     { name: 'MICHEZO', href: '/michezo' },
     // { name: 'MAKALA', href: '/makala' },
     { name: 'ABOUT US', href: '/about-us' },
+    // { name: 'EAST AFRICA', href: '/eastafrica' },
+
   ];
 
   const toggleMenu = () => {

@@ -38,7 +38,7 @@ export default function NewsComp() {
         try {
           const response = await fetch('/api/article')
           const data = await response.json()
-          setArticles(data)
+          setArticles(data.articles)
         } catch (error) {
           console.error('Error fetching articles:', error)
         } finally {

@@ -9,6 +9,7 @@ export default function page() {
         <p className="text-white/80 mb-8 max-w-2xl mx-auto font-mono">
           Newsfy is an innovative final year IT project focused on creating a modern news aggregation and management platform. Our mission is to demonstrate the practical application of web technologies in delivering a seamless news experience.
         </p>
+        
         <svg className="w-64 h-12 mx-auto mb-6" viewBox="0 0 400 50">
           <path
             d="M10 25 C 50 10, 100 40, 150 25 C 200 10, 250 40, 300 25 C 350 10, 400 40, 450 25"
@@ -20,7 +21,7 @@ export default function page() {
         </svg>
         <Link
           href="/"
-          className="inline-flex items-center px-6 py-3 text-sm font-medium text-shadow-blue-600 rounded-md hover:text-blue-500/50 hover:underline transition-colors duration-300"
+          className="inline-flex items-center px-6 py-3 text-sm font-medium text-shadow-blue-600 rounded-md hover:text-blue-500/50 hover:underline transition-colors duration-300 "
         >
           <svg 
             className="w-4 h-4 mr-2" 
