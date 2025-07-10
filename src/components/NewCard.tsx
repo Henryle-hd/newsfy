@@ -1,5 +1,5 @@
 import React from 'react'
-import Image from 'next/image'
+// import Image from 'next/image'
 import Link from 'next/link'
 
 interface ArticleProp{
@@ -35,9 +35,9 @@ export default function NewsCardComp({id,day, month, title, image, isFirst=false
     <Link href={`/habari/${id}`} className={`flex flex-col  `}>
         {/* Image Container */}
         {/* w-[97%] sm:w-[70%] */}
-        <div className="relative h-62 overflow-hidden rounded-md mt-5">
-        <Image src={image} alt={title} fill className="object-cover"/>
-        {/* Date Badge */}1
+        <div className="relative h-62 overflow-hidden rounded-sm mt-5">
+        <img src={image} alt={title}  className="object-cover w-full h-full"/>
+        {/* Date Badge */}
         <div className={`absolute bottom-4 sm:bottom-2 sm:right-10":"bottom-4 right-4  bg-red-600 text-white px-4 py-3 rounded-md text-center  z-11`}>
             <div className="text-md font-bold leading-none">{formattedDay}</div>
             <div className="text-[12px] font-medium">{monthWord}</div>

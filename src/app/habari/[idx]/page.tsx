@@ -1,142 +1,165 @@
+  
+  
   import Image from "next/image";
   import { Metadata } from 'next';
   import NewsCardComp from '@/components/NewCard';
 import HotNewsTicker from "@/components/HotNewsBanner";
 import CommentForm from "@/components/CommentForm";
 
-interface UserType{
-    id:string;
-    name:string;
-    image:string;
+interface UserType {
+  id: string;
+  name: string | null;
+  image: string | null;
 }
-  interface News {
-    id: string;
-    title: string;
-    content: string;
-    image: string;
-    day: string;
-    month: string;
-    status?: string;
-    isPublic: boolean;
-    user: UserType;
-    category: string[];
-    createdAt: Date;
-    updatedAt: Date;
-  }
 
-  const exampleNews: News[] = [
-    {
-      id: "1",
-      title: "Tanzania yafuzu Afcon 2024 baada ya miaka 39",
-      content: `<h1 style="font-size: 24px; color: #333; margin-bottom: 15px;">Tanzania yafuzu AFCON 2024</h1>
-      
-      <p>Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.</p>
-      
-      <h1 style="font-size: 22px; color: #333; margin-bottom: 15px;">Maoni ya wachezaji</h1>
-      <p>Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu.Kocha wa timu hiyo amesema kuwa mafanikio haya ni matokeo ya kazi ngumu na maandalizi mazuri ya timu. Wachezaji wameonyesha moyo wa kizalendo na umoja katika michezo yote ya kufuzu</p>
-      `
+interface CommentType {
+  id: string;
+  content: string;
+  subscriberId: string;
+  createdAt: Date;
+  updatedAt: Date;
+}
 
-      ,
-      image: "/img.webp",
-      day: "15",
-      month: "6",
-      isPublic: true,
-      user: {
-        id:"1",
-        name:"Amina Munira",
-        image:"/avatar.webp"
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  day: string;
+  month: string;
+  status?: string;
+  isPublic: boolean;
+  createdByBot: boolean;
+  ArticleSource?: string;
+  userid?: string;
+  user?: UserType;
+  category: string;
+  comment: CommentType[];
+  views: number;
+  likes: number;
+  createdAt: Date;
+  updatedAt: Date;
+}
+
+async function getArticle(id: string): Promise<Article> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/article?id=${id}`);
+  if (!res.ok) throw new Error('Failed to fetch article');
+  return res.json();
+}
+
+async function getRelatedArticles(category: string): Promise<Article[]> {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/article?category=${category}`);
+  if (!res.ok) throw new Error('Failed to fetch related articles');
+  const data = await res.json();
+  return data.articles;
+}
+
+async function updateArticleViews(article: Article) {
+  try {
+    const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/article`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
       },
-      category: ["Michezo"],
-      createdAt: new Date("2023-06-15"),
-      updatedAt: new Date("2023-06-15")
-    },
-    {
-      id: "2",
-      title: "Serikali yatoa maelekezo mapya kuhusu usajili wa simu",
-      content: `<p>Serikali imetoa maelekezo mapya kuhusu usajili wa simu nchini, ikitaka wananchi wote kuhakikisha simu zao zimesajiliwa kwa kutumia Namba za Kitambulisho cha Taifa. Hatua hii inakuja ili kudhibiti matumizi mabaya ya simu.</p><p>Waziri wa Mawasiliano amesisitiza kuwa hatua hii ni muhimu katika kupambana na uhalifu wa kimtandao na kuhakikisha usalama wa watumiaji wa simu.</p>
-
-      
-      `,
-      image: "/img.webp",
-      day: "16",
-      month: "6",
-      isPublic: true,
-      user: {
-        id:"1",
-        name:"Amina Munira",
-        image:"/avatar.webp"
-      },
-      category: ["Teknolojia", "Serikali"],
-      createdAt: new Date("2023-06-16"),
-      updatedAt: new Date("2023-06-16")
-    }
-  ];
-
-  // Helper function to strip HTML tags
-  function stripHtml(html: string): string {
-    return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+      body: JSON.stringify({
+        ...article,
+        views: article.views + 1
+      }),
+    });
+    if (!response.ok) throw new Error('Failed to update views');
+  } catch (error) {
+    console.error('Error updating views:', error);
   }
+}
 
-  export async function generateMetadata(
-    { params }: Props
-  ): Promise<Metadata> {
-    const { idx } = await params;
-    const news = exampleNews.find(n => n.id === idx) || exampleNews[0];
-  
-    const cleanDescription = stripHtml(news.content).substring(0, 160);
- 
-    return {
-      title: news.title,
+// async function updateArticleLikes(article: Article) {
+//   try {
+//     const response = await fetch(`${process.env.NEXT_PUBLIC_APP_URL}/api/article`, {
+//       method: 'PUT',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify({
+//         ...article,
+//         likes: article.likes + 1
+//       }),
+//     });
+//     if (!response.ok) throw new Error('Failed to update likes');
+//     return await response.json();
+//   } catch (error) {
+//     console.error('Error updating likes:', error);
+//   }
+// }
+
+export async function generateMetadata(
+  { params }: Props
+): Promise<Metadata> {
+  const { idx } = await params;
+  const article = await getArticle(idx);
+
+  const cleanDescription = stripHtml(article.content).substring(0, 160);
+
+  return {
+    title: article.title,
+    description: cleanDescription,
+    openGraph: {
+      title: article.title,
       description: cleanDescription,
-      openGraph: {
-        title: news.title,
-        description: cleanDescription,
-        images: [news.image],
-      },
-      twitter: {
-        card: 'summary_large_image',
-        title: news.title,
-        description: cleanDescription,
-        images: [news.image],
-      },
-    }
+      images: [article.image],
+    },
+    twitter: {
+      card: 'summary_large_image',
+      title: article.title,
+      description: cleanDescription,
+      images: [article.image],
+    },
+  }
+}
+
+function stripHtml(html: string): string {
+  return html.replace(/<[^>]*>/g, '').replace(/&nbsp;/g, ' ').trim();
+}
+
+type Props = {
+  params: Promise<{ idx: string }>
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
+
+export default async function Page({ params }: { params: Promise<{ idx: string }> }) {
+  const { idx } = await params;
+  const article = await getArticle(idx);
+  const relatedNews = (await getRelatedArticles(article.category)).slice(0,3);
+
+  // Update views when page loads
+  await updateArticleViews(article);
+
+  const months = {
+    1: 'Jan',
+    2: 'Feb',
+    3: 'Mar',
+    4: 'Apr',
+    5: 'May',
+    6: 'Jun',
+    7: 'Jul',
+    8: 'Aug',
+    9: 'Sep',
+    10: 'Oct',
+    11: 'Nov',
+    12: 'Dec'
   }
 
-  type Props = {
-    params: Promise<{ idx: string }>
-    searchParams: Promise<{ [key: string]: string | string[] | undefined }>
-  }
+  const monthWord = months[Number(article.month) as keyof typeof months] || article.month || ''
+  const day = Number(article.day) < 10 ? `0${article.day}` : article.day
 
-  export default async function Page({ params }: { params: Promise<{ idx: string }> }) {
-    const { idx } = await params;
-    const news = exampleNews.find(n => n.id === idx) || exampleNews[0];
-    
-    const relatedNews = [
-      {id: '3', day: '3', month: '1', title: 'Rais Samia azindua mradi mkubwa wa maji Dar', image: '/img.webp', pageName: 'habari'},
-      {id: '4', day: '4', month: '1', title: 'Simba watwaa ubingwa wa ligi kuu Tanzania', image: '/img.webp', pageName: 'habari'},
-      {id: '5', day: '5', month: '1', title: 'Benki kuu yatoa mwelekeo mpya wa uchumi', image: '/img.webp', pageName: 'habari'},
-    ];
+  // const handleLikeClick = async () => {
+  //   const updatedArticle = await updateArticleLikes(article);
+  //   if (updatedArticle) {
+  //     article.likes = updatedArticle.likes;
+  //   }
+  // };
 
-    const months = {
-      1: 'Jan',
-      2: 'Feb',
-      3: 'Mar',
-      4: 'Apr',
-      5: 'May',
-      6: 'Jun',
-      7: 'Jul',
-      8: 'Aug',
-      9: 'Sep',
-      10: 'Oct',
-      11: 'Nov',
-      12: 'Dec'
-    }
-
-    const monthWord = months[Number(news.month) as keyof typeof months] || news.month || ''
-    const day = Number(news.day) < 10 ? `0${news.day}` : news.day
-
-    return (
-      <div className="font-['Roboto'] bg-[#fafbfc] min-h-screen pt-11">
+  return (
+    <div className="font-['Roboto'] bg-[#fafbfc] min-h-screen pt-11">
       <div className="px-4 md:px-12 py-8 max-w-7xl m-auto">
         
         {/* Main Content */}
@@ -144,60 +167,62 @@ interface UserType{
             <HotNewsTicker />
             {/* Article Title */}
           <h1 className="mt-5 mb-2 text-xl sm:text-3xl font-black text-gray-800 tracking-wide text-center">
-            {news.title}
+            {article.title}
           </h1>
 
           {/* Author and Date */}
           <div className="flex items-center justify-center mb-6 text-sm text-gray-600">
             <div className="flex items-center">
               <Image
-                src={news.user.image}
+                src={article.user?.image || "/avatar.webp"}
                 alt="Author"
                 width={24}
                 height={24}
                 className="rounded-full mr-2"
               />
-              <span className="mr-2">{news.user.name}</span>
+              <span className="mr-2">{article.user?.name || "Newsfy Team"}</span>
             </div>
             <span className="mx-2">•</span>
-            <time>{`${day} ${monthWord} ${news.createdAt.getFullYear()}`}</time>
+            <time>{`${day} ${monthWord} ${new Date(article.createdAt).getFullYear()}`}</time>
           </div>
 
           {/* Article Image */}
           <div className="rounded-md overflow-hidden relative">
-            <Image
-              src={news.image || "/samia3.webp"}
-              alt={news.title}
+            <img
+              src={article.image || "/samia3.webp"}
+              alt={article.title}
               width={1000}
               height={1000}
               className="w-full h-[500px] object-cover"
-              priority
+              // priority
             />
             {/* Date Badge */}
-            <div className="absolute bottom-4 right-4 bg-[#E6002D] text-white rounded-md py-2 px-3 flex flex-col items-center justify-center font-bold text-[1.6rem]">
+            <div className="absolute top-0 right-0 bg-[#E6002D] text-white rounded-bl-lg py-2 px-3 flex flex-col items-center justify-center font-bold text-[1.6rem]">
               <div>{day}</div>
               <div className="text-xs sm:text-sm font-normal">{monthWord}</div>
             </div>
           </div>
 
-          
           {/* Article Content */}
           <div className="mt-4 text-[#555] text-xs sm:text-sm leading-relaxed description_from_user">
-            <div dangerouslySetInnerHTML={{__html:news.content}}></div>
+            <div dangerouslySetInnerHTML={{__html:article.content}}></div>
              {/* Engagement Stats */}
           <div className="flex items-center justify-between mt-4 px-2">
             <div className="flex items-center space-x-6">
-              <button className="flex items-center space-x-2 text-gray-600 hover:text-red-500">
+              <button 
+                // onClick={handleLikeClick}
+                className="flex items-center space-x-2 text-gray-600 hover:text-red-500 cursor-pointer"
+              >
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
                 </svg>
-                <span>1.2K</span>
+                <span>{article.likes}</span>
               </button>
               <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
                 </svg>
-                <span>234</span>
+                <span>{article.comment.length}</span>
               </button>
             </div>
             <div className="flex items-center text-gray-600">
@@ -205,30 +230,24 @@ interface UserType{
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z" />
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z" />
               </svg>
-              <span>3.5K views</span>
+              <span>{article.views} views</span>
             </div>
           </div>
           </div>
           {/* Categories */}
           <div className="border-t-2 border-gray-200 mt-2 pt-2 flex flex-col sm:flex-row justify-between sm:items-center">
               <div>
-                  {/* <span className="font-bold text-xs sm:text-sm text-gray-900">Makundi</span> */}
                   <div className="inline-flex ml-3 space-x-2">
-                      {news.category.map((cat) => (
-                      <span
-                          key={cat}
-                          className={`text-xs px-3 py-1 rounded-md font-semibold bg-black text-gray-100`}
-                      >
-                          {cat.toUpperCase()}
+                      <span className="text-xs px-3 py-1 rounded-sm font-semibold bg-black text-gray-100">
+                          {article.category.toUpperCase()}
                       </span>
-                      ))}
                   </div>
             </div>
             {/* Social Icons */}
             <div className="flex gap-3 mt-3">
                 <a
                   title="Share on LinkedIn"
-                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL || '')}/habari/${idx}&title=${encodeURIComponent(news.title || '')}`}
+                  href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL || '')}/habari/${idx}&title=${encodeURIComponent(article.title || '')}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
@@ -239,7 +258,7 @@ interface UserType{
                 </a>
                 <a
                   title="Share on Twitter"
-                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(news.title || '')}&url=${encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL || '')}/habari/${idx}`}
+                  href={`https://twitter.com/intent/tweet?text=${encodeURIComponent(article.title || '')}&url=${encodeURIComponent(process.env.NEXT_PUBLIC_APP_URL || '')}/habari/${idx}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
@@ -250,7 +269,7 @@ interface UserType{
                 </a>
                 <a
                   title="Share on WhatsApp"
-                  href={`https://wa.me/?text=${encodeURIComponent(`${news.title || ''} ${process.env.NEXT_PUBLIC_APP_URL || ''}/habari/${idx}`)}`}
+                  href={`https://wa.me/?text=${encodeURIComponent(`${article.title || ''} ${process.env.NEXT_PUBLIC_APP_URL || ''}/habari/${idx}`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-8 h-8 bg-gray-100 rounded-full flex items-center justify-center hover:bg-red-200 transition-colors"
@@ -260,27 +279,31 @@ interface UserType{
                   </svg>
                 </a>
               </div>
-              
           </div>
 
+        <CommentForm/>
           {/* Related News */}
-          <h2 className="text-xl font-bold text-gray-800 mt-8 mb-4">Habari Zinazofanana</h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-            {relatedNews.map((news) => (
-              <NewsCardComp
-                key={news.id}
-                id={news.id}
-                day={news.day}
-                month={news.month}
-                title={news.title}
-                image={news.image}
-                pageName={news.pageName}
-                isFirst={false}
-              />
-            ))}
+          <div className="border border-gray-200 rounded-xs  mt-10">
+            <h2 className="text-xl font-bold text-gray-800 mb-4 uppercase px-4 pt-4">Related News</h2>
+            <hr className="border-gray-200"/>
+            
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {relatedNews.map((news) => (
+                <NewsCardComp
+                  key={news.id}
+                  id={news.id}
+                  day={news.day}
+                  month={news.month}
+                  title={news.title}
+                  image={news.image}
+                  pageName={""}
+                  isFirst={false}
+                />
+              ))}
+            </div>
           </div>
 
-          <CommentForm/>
+          
         </div>
 
      </div>

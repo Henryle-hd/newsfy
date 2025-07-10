@@ -3,55 +3,32 @@ import React, { useState, useEffect } from 'react';
 import { ChevronUp, ChevronDown, Flame } from 'lucide-react';
 import Link from 'next/link';
 
+interface Article {
+  id: string;
+  title: string;
+  content: string;
+  image: string;
+  category: string;
+  createdAt: string;
+  views: number;
+  likes: number;
+  comment: Comment[];
+}
+
+interface Comment {
+  id: string;
+  content: string;
+  userId: string;
+  createdAt: string;
+}
+
 export default function HotNewsTicker() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
-
-  // Sample hot news data - replace with your actual news data
-  const hotNews = [
-    {
-      id: 1,
-      title: "Rais Samia azindua mradi wa barabara ya kimataifa",
-      category: "SIASA",
-      time: "2 masaa yaliyopita"
-    },
-    {
-      id: 2,
-      title: "Simba SC waichapa Yanga SC 2-1 katika mchezo wa derby",
-      category: "MICHEZO",
-      time: "4 masaa yaliyopita"
-    },
-    {
-      id: 3,
-      title: "Bei ya mafuta yapanda kwa asilimia 15 nchini",
-      category: "UCHUMI",
-      time: "6 masaa yaliyopita"
-    },
-    {
-      id: 4,
-      title: "Mfumo wa afya wa Tanzania unapokea msaada wa dola milioni 50",
-      category: "HABARI",
-      time: "8 masaa yaliyopita"
-    },
-    {
-      id: 5,
-      title: "Mvua kubwa yasababisha mafuriko Dar es Salaam",
-      category: "MAZINGIRA",
-      time: "10 masaa yaliyopita"
-    }
-  ];
-
-  // Auto-rotate news kila baada ya 5 seconds
-  useEffect(() => {
-    const interval = setInterval(() => {
-      handleNext();
-    }, 5000);
-
-    return () => clearInterval(interval);
-  }, [currentIndex]);
+  const [hotNews, setHotNews] = useState<Article[]>([]);
 
   const handleNext = () => {
-    if (isAnimating) return;
+    if (isAnimating || !hotNews.length) return;
     setIsAnimating(true);
     setTimeout(() => {
       setCurrentIndex((prev) => (prev + 1) % hotNews.length);
@@ -60,13 +37,36 @@ export default function HotNewsTicker() {
   };
 
   const handlePrev = () => {
-    if (isAnimating) return;
+    if (isAnimating || !hotNews.length) return;
     setIsAnimating(true);
     setTimeout(() => {
       setCurrentIndex((prev) => (prev - 1 + hotNews.length) % hotNews.length);
       setIsAnimating(false);
     }, 200);
   };
+
+  useEffect(() => {
+    const fetchHotNews = async () => {
+      try {
+        const response = await fetch('/api/hotnews');
+        const data = await response.json();
+        setHotNews(data);
+      } catch (error) {
+        console.error('Error fetching hot news:', error);
+      }
+    };
+    fetchHotNews();
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(() => {
+      handleNext();
+    }, 3000);
+
+    return () => clearInterval(interval);
+  }, [handleNext]);
+
+  if (!hotNews.length) return null;
 
   return (
     <div className="">
@@ -93,7 +93,13 @@ export default function HotNewsTicker() {
                     {hotNews[currentIndex].title}
                   </h3>
                 </Link>
-                
+                <div className="flex items-center space-x-2 text-xs text-gray-500">
+                  <span>{hotNews[currentIndex].category}</span>
+                  <span>•</span>
+                  <span>{new Date(hotNews[currentIndex].createdAt).toLocaleTimeString()}</span>
+                  <span>•</span>
+                  <span>{hotNews[currentIndex].views} views</span>
+                </div>
               </div>
             </div>
           </div>
