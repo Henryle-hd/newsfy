@@ -7,14 +7,14 @@ export default function CommentForm() {
       id: "1",
       name: "Amina Hassan",
       comment: "Hongera sana Taifa Stars! Mmetufanya tujivunie kuwa Watanzania. Tunasubiri kuwaona mkipambana AFCON 2024.",
-      time: "15 Jun 2023",
+      time: "15 Jun 2025",
       avatar: "/avatar.webp"
     },
     {
       id: "2",
       name: "Munira Zubery",
       comment: "Kazi nzuri sana timu yetu ya taifa. Miaka 39 ni muda mrefu, lakini hatimaye tumefanikiwa. Tunatarajia matokeo mazuri zaidi AFCON.",
-      time: "16 Jun 2023",
+      time: "16 Jun 2025",
       avatar: "/avatar.webp"
     }
   ]

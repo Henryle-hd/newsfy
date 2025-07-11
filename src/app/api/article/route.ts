@@ -47,7 +47,7 @@
         })
       ]);
 
-      console.log(articles)
+      // console.log(articles)
       return NextResponse.json({
         articles,
         totalPages: Math.ceil(total / limit),
