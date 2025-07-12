@@ -1,8 +1,6 @@
-
 'use client'
 
 import { useState } from 'react'
-// import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import Image from "next/image"
 
@@ -11,7 +9,6 @@ export default function ForgotPassword() {
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [successMessage, setSuccessMessage] = useState('')
-//   const router = useRouter()
 
   const validateEmail = (email: string) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
@@ -41,15 +38,15 @@ export default function ForgotPassword() {
         }),
       })
 
+      const data = await response.json()
       if (response.ok) {
-        setSuccessMessage('Password reset instructions have been sent to your email.')
+        setSuccessMessage(data.message || 'Password reset instructions have been sent to your email.')
         setEmail('')
       } else {
-        const data = await response.json()
-        setError(data.message || 'Failed to process request')
+        setError(data.error || 'Failed to process request')
       }
     } catch (error) {
-        console.log(error)
+      console.log(error)
       setError('An unexpected error occurred. Please try again.')
     } finally {
       setLoading(false)

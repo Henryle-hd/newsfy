@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Home, Users, Settings, Menu, X, Globe,User, Box } from 'lucide-react'
+import { Home, Users, Menu, X, Globe,User, Box } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from '../ui/scroll-area'
 import { usePathname, useRouter } from 'next/navigation'
@@ -11,7 +11,6 @@ import { useEffect } from 'react'
 
 export default function SideBar() {
     const [isSidebarOpen, setIsSidebarOpen] = useState(true)
-    // typeof window !== 'undefined' ? window.innerWidth >= 1280 : false
     const pathname = usePathname()
     const router = useRouter()
     const {status } = useSession()
@@ -28,7 +27,6 @@ export default function SideBar() {
           items: [
             { icon: Home, label: 'Overview', href: '/dashboard/overview' },
             { icon: Globe, label: 'Articles', href: '/dashboard/articles' },
-            // { icon: Bell, label: 'Notifications', href: '/dashboard/message' },
           ]
         },
           {
@@ -39,7 +37,7 @@ export default function SideBar() {
               { icon: Box, label: 'Managers', href: '/dashboard/managers' },
             //   { icon: MessageSquare, label: 'Message', href: '/dashboard/contact-message' },
               { icon: Users, label: 'Subscribers', href: '/dashboard/subscribers' },
-              { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+              // { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
             ]
           }
     ]

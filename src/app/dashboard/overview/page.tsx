@@ -27,7 +27,7 @@ interface Stats {
   comments: {
     current: number
     previous: number
-    percentChange: number
+    percentChange: string
   }
 }
 
@@ -41,17 +41,17 @@ interface CategoryDistribution {
   value: number
 }
 
-interface TopUser {
+interface RecentSubscribers {
   name: string
-  articles: number
-  views: number
+  email: string
+  comment: number
 }
 
 interface DashboardData {
   stats: Stats
   articleTrend: ArticleTrend[]
   categoryDistribution: CategoryDistribution[]
-  topUsers: TopUser[]
+  RecentSubscribers: RecentSubscribers[]
 }
 
 export default function Dashboard() {
@@ -60,59 +60,19 @@ export default function Dashboard() {
   const COLORS = ['#dc2626', '#facc15', '#16a34a', '#2563eb', '#9333ea', '#ec4899']
 
   useEffect(() => {
-    const fakeData: DashboardData = {
-      stats: {
-        articles: {
-          current: 2456,
-          previous: 2100,
-          percentChange: "16.9"
-        },
-        subscribers: {
-          current: 15780,
-          previous: 12500,
-          percentChange: "26.2"
-        },
-        views: {
-          current: 8900,
-          previous: 7500,
-          percentChange: "18.7"
-        },
-        comments: {
-          current: 45600,
-          previous: 38000,
-          percentChange: 20.0
-        }
-      },
-      articleTrend: [
-        { name: "Mon", views: 3000 },
-        { name: "Tue", views: 30000 },
-        { name: "Wed", views: 38000 },
-        { name: "Thu", views: 22000 },
-        { name: "Fri", views: 41000 },
-        { name: "Sat", views: 30000 },
-        { name: "Sun", views: 60000 }
-      ],
-      categoryDistribution: [
-        { name: "KIMATAIFA", value: 20 },
-        { name: "AFYA", value: 15 },
-        { name: "TEHAMA", value: 25 },
-        { name: "AJIRA", value: 15 },
-        { name: "BURUDANI", value: 15 },
-        { name: "MICHEZO", value: 10 }
-      ],
-      topUsers: [
-        { name: "Sarah Johnson", articles: 156, views: 985000 },
-        { name: "Michael Chen", articles: 142, views: 876000 },
-        { name: "Emily Williams", articles: 128, views: 754000 },
-        { name: "David Rodriguez", articles: 115, views: 689000 },
-        { name: "Lisa Thompson", articles: 98, views: 567000 },
-      ]
+    const fetchData = async () => {
+      try {
+        const response = await fetch('/api/overview')
+        const apiData = await response.json()
+        setData(apiData)
+        setLoading(false)
+      } catch (error) {
+        console.error("Error fetching data:", error)
+        setLoading(false)
+      }
     }
 
-    setTimeout(() => {
-      setData(fakeData)
-      setLoading(false)
-    }, 1000)
+    fetchData()
   }, [])
 
   const statsConfig = data ? [
@@ -248,7 +208,6 @@ export default function Dashboard() {
                                     fontSize: '0.75rem'
                                 }} />
                       <Legend
-                    //   iconType='plainline'
                       wrapperStyle={{
                         fontSize: '9px',
                         border: 'none',
@@ -260,7 +219,6 @@ export default function Dashboard() {
               </div>
             </CardContent>
           </Card>
-
 
           <Card className="shadow-xs hover:shadow-sm rounded-sm">
           <CardHeader className="border-b border-gray-100 p-3 md:p-4 md:py-0">
@@ -274,8 +232,8 @@ export default function Dashboard() {
                   <TableRow className="bg-gray-50">
                     <TableHead className="font-bold text-gray-800 text-[0.65rem] md:text-xs">#</TableHead>
                     <TableHead className="font-bold text-gray-800 text-[0.65rem] md:text-xs">User</TableHead>
-                    <TableHead className="font-bold text-gray-800 text-[0.65rem] md:text-xs">Articles</TableHead>
-                    <TableHead className="font-bold text-gray-800 text-[0.65rem] md:text-xs">Views</TableHead>
+                    <TableHead className="font-bold text-gray-800 text-[0.65rem] md:text-xs">Emails</TableHead>
+                    <TableHead className="font-bold text-gray-800 text-[0.65rem] md:text-xs">Comment</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -294,7 +252,7 @@ export default function Dashboard() {
                       </TableRow>
                     ))
                   ) : (
-                    data?.topUsers.map((user, index) => (
+                    data?.RecentSubscribers.map((user, index) => (
                       <TableRow key={index} className="hover:bg-gray-50">
                         <TableCell className="text-[0.65rem] md:text-xs">{index + 1}</TableCell>
                         <TableCell>
@@ -308,8 +266,8 @@ export default function Dashboard() {
                             </div>
                           </div>
                         </TableCell>
-                        <TableCell className="text-[0.65rem] md:text-xs">{user.articles}</TableCell>
-                        <TableCell className="text-[0.65rem] md:text-xs">{user.views.toLocaleString()}</TableCell>
+                        <TableCell className="text-[0.65rem] md:text-xs">{user.email}</TableCell>
+                        <TableCell className="text-[0.65rem] md:text-xs">{user.comment.toLocaleString()}</TableCell>
                       </TableRow>
                     ))
                   )}
@@ -319,9 +277,6 @@ export default function Dashboard() {
           </CardContent>
         </Card>
         </div>
-
-
-        
       </div>
     </div>
   )

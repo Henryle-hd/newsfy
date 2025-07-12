@@ -54,7 +54,7 @@ export default function SignIn() {
           content: `
             <div style="padding: 20px;">
               <h2 style="color: #333; margin-bottom: 20px;">Hello,</h2>
-              <p style="color: #666; line-height: 1.6;">We have detected a new login to your Vunja Mduara account.</p>
+              <p style="color: #666; line-height: 1.6;">We have detected a new login to your newsfy account.</p>
               <div style="padding: 20px; border: 1px solid #E6002D; border-radius: 8px; margin: 20px 0;">
                 <h3 style="color: #E6002D; margin-bottom: 15px;">Login Details:</h3>
                 <ul style="list-style: none; padding: 0;">
@@ -198,13 +198,13 @@ export default function SignIn() {
               >
                 {loading ? 'Login...' : 'Login'}
               </button>
-              <p className="text-center text-sm text-gray-600">
+              {/* <p className="text-center text-sm text-gray-600">
                 {"Don't have an account?"} <Link href="/auth/signup"
                   className="text-red-600 font-semibold hover:text-red-800"
                 >
                   Sign up
                 </Link>
-              </p>
+              </p> */}
             </div>
           </form>
         </div>

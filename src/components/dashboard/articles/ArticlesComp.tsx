@@ -36,7 +36,7 @@ export default function NewsComp() {
     useEffect(() => {
       const fetchArticles = async () => {
         try {
-          const response = await fetch('/api/article')
+          const response = await fetch('/api/article?all=true')
           const data = await response.json()
           setArticles(data.articles)
         } catch (error) {

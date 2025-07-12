@@ -9,6 +9,7 @@
       const { searchParams } = new URL(req.url);
       const id = searchParams.get('id');
       const category = searchParams.get('category');
+      const allArticle = searchParams.get('all');
       const page = parseInt(searchParams.get('page') || '1');
       const limit = 8;
       const skip = (page - 1) * limit;
@@ -25,6 +26,14 @@
           return NextResponse.json({ error: "Article not found" }, { status: 404 });
         }
         return NextResponse.json(article);
+      }
+
+      if (allArticle){
+        const articles= await prisma.article.findMany({
+          orderBy:{createdAt:'desc'}
+        })
+
+        return NextResponse.json({articles})
       }
 
       const whereClause = category ? { category } : {};

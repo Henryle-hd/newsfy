@@ -5,6 +5,7 @@
   import NewsCardComp from '@/components/NewCard';
 import HotNewsTicker from "@/components/HotNewsBanner";
 import CommentForm from "@/components/CommentForm";
+import LikeBtn from "@/components/LikeBtn";
 
 interface UserType {
   id: string;
@@ -209,15 +210,7 @@ export default async function Page({ params }: { params: Promise<{ idx: string }
              {/* Engagement Stats */}
           <div className="flex items-center justify-between mt-4 px-2">
             <div className="flex items-center space-x-6">
-              <button 
-                // onClick={handleLikeClick}
-                className="flex items-center space-x-2 text-gray-600 hover:text-red-500 cursor-pointer"
-              >
-                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" />
-                </svg>
-                <span>{article.likes}</span>
-              </button>
+             <LikeBtn articleId={idx}/>
               <button className="flex items-center space-x-2 text-gray-600 hover:text-blue-500">
                 <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
@@ -281,7 +274,7 @@ export default async function Page({ params }: { params: Promise<{ idx: string }
               </div>
           </div>
 
-        <CommentForm/>
+        <CommentForm articleId={idx}/>
           {/* Related News */}
           <div className="border border-gray-200 rounded-xs  mt-10">
             <h2 className="text-xl font-bold text-gray-800 mb-4 uppercase px-4 pt-4">Related News</h2>
