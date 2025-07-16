@@ -187,7 +187,7 @@ export default function Page({ params }: { params: Promise<{ idx: string }> }) {
                   {...register('category')}
                   className="w-full px-3 py-2 text-sm rounded-sm border border-gray-300 focus:outline-none focus:ring-2 focus:ring-red-400"
                 >
-                  <option value="KIMATAIFA">KIMATAIFA</option>
+                  <option value="HABARI">HABARI</option>
                   <option value="AFYA">AFYA</option>
                   <option value="TEHAMA">TEHAMA</option>
                   <option value="AJIRA">AJIRA</option>

@@ -17,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Newsfy - Your Source for Latest News",
-  description: "Stay informed with Newsfy - your trusted source for breaking news, articles and updates across KIMATAIFA, AFYA, TEHAMA, AJIRA, BURUDANI, and MICHEZO categories. Get real-time news coverage, expert analysis, and in-depth reporting.",
+  description: "Stay informed with Newsfy - your trusted source for breaking news, articles and updates across HABARI, AFYA, TEHAMA, AJIRA, BURUDANI, and MICHEZO categories. Get real-time news coverage, expert analysis, and in-depth reporting.",
   keywords: "news, breaking news, latest news, international news, health news, technology news, jobs, entertainment, sports news, Tanzania news",
   authors: [{ name: "Amina Hassan" },{ name: "Munira Zubery" }],
   creator: "Newsfy",

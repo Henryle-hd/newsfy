@@ -19,7 +19,7 @@ export default function NewsNavbar() {
 
   const navItems = [
     { name: 'HOME', href: '/' },
-    { name: 'KIMATAIFA', href: '/kimataifa' },
+    { name: 'HABARI', href: '/habari' },
     { name: 'AFYA', href: '/afya' },
     { name: 'TEHAMA', href: '/tehama' },
     { name: 'AJIRA', href: '/ajira' },

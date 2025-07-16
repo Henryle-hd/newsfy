@@ -10,6 +10,7 @@
       const id = searchParams.get('id');
       const category = searchParams.get('category');
       const allArticle = searchParams.get('all');
+      const isPublic = searchParams.get('isPublic') === 'true';
       const page = parseInt(searchParams.get('page') || '1');
       const limit = 8;
       const skip = (page - 1) * limit;
@@ -30,13 +31,17 @@
 
       if (allArticle){
         const articles= await prisma.article.findMany({
+          where: isPublic ? { isPublic: true } : {},
           orderBy:{createdAt:'desc'}
         })
 
         return NextResponse.json({articles})
       }
 
-      const whereClause = category ? { category } : {};
+      const whereClause = {
+        ...(category ? { category } : {}),
+        ...(isPublic ? { isPublic: true } : {})
+      };
 
       const [articles, total] = await Promise.all([
         prisma.article.findMany({
@@ -162,7 +167,7 @@
       const article = await prisma.article.delete({
         where: {
           id: id,
-          userid: session.user.id, // Ensure user owns the article
+          // userid: session.user.id, // Ensure user owns the article
         },
       });
 

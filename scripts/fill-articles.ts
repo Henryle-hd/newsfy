@@ -4,12 +4,12 @@ const prisma = new PrismaClient();
 
 // Sample articles based on Tanzania news themes
 const articles = [
-  // KIMATAIFA (International)
+  // HABARI (International)
   {
     title: "Tanzania Participates in Global Giga Connectivity Forum",
     content: "GENEVA, SWITZERLAND: Tanzania has participated in the Global Giga Connectivity Forum, which aims to discuss strategies to enhance teaching and learning through digital connectivity. The forum focused on bridging the digital divide and improving access to quality education through technology. Tanzanian representatives highlighted the country's progress in expanding internet infrastructure and connecting schools to high-speed internet. The participation underscores Tanzania's commitment to digital transformation and educational advancement on the global stage.",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "9",
     month: "July",
     status: "published",
@@ -21,7 +21,7 @@ const articles = [
     title: "SADC Leaders Celebrate Development Milestones",
     content: "President Samia Suluhu Hassan addressed the Southern African Development Community (SADC) fraternity, celebrating significant milestones achieved in regional development and cooperation. The meeting highlighted progress in trade facilitation, infrastructure development, and cross-border initiatives. Tanzania's role in regional integration was emphasized, particularly in energy cooperation and transport corridor development. The President outlined Tanzania's commitment to strengthening SADC partnerships and promoting sustainable development across the region.",
     image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "8",
     month: "July",
     status: "published",
@@ -33,7 +33,7 @@ const articles = [
     title: "Tanzania-Turkey Partnership Strengthens Economic Ties",
     content: "A high-level delegation from Turkey visited Tanzania to discuss expanding bilateral trade and investment opportunities. The meeting focused on sectors including manufacturing, agriculture, and tourism. Turkish investors expressed interest in Tanzania's growing economy and strategic location in East Africa. Both countries agreed to establish joint working groups to facilitate business partnerships and explore new areas of cooperation. The partnership is expected to create employment opportunities and boost economic growth in both nations.",
     image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "7",
     month: "July",
     status: "published",
@@ -45,7 +45,7 @@ const articles = [
     title: "East African Community Summit Addresses Regional Integration",
     content: "Tanzania participated in the East African Community (EAC) Summit focusing on accelerating regional integration and addressing common challenges. Key discussions centered on harmonizing trade policies, improving transport infrastructure, and strengthening security cooperation. The summit also addressed climate change adaptation and sustainable development goals. Tanzania's President emphasized the importance of unity and cooperation in achieving shared prosperity across the East African region.",
     image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "6",
     month: "July",
     status: "published",

@@ -151,10 +151,10 @@
                     <input
                       type="radio"
                       {...register('category')}
-                      value="KIMATAIFA"
+                      value="HABARI"
                       className="mr-2"
                     />
-                    <span>KIMATAIFA</span>
+                    <span>HABARI</span>
                   </label>
                   <label className="flex items-center">
                     <input

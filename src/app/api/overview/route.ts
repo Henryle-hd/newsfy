@@ -114,7 +114,7 @@
       );
 
       // Get category distribution
-      const categories = ['KIMATAIFA', 'AFYA', 'TEHAMA', 'AJIRA', 'BURUDANI', 'MICHEZO'];
+      const categories = ['HABARI', 'AFYA', 'TEHAMA', 'AJIRA', 'BURUDANI', 'MICHEZO'];
       const categoryDistribution = await Promise.all(
         categories.map(async (category) => {
           const count = await prisma.article.count({

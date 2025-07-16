@@ -40,7 +40,7 @@ interface Article {
 }
 
 interface RecentNewsProps {
-  category?: 'ALL' | 'KIMATAIFA' | 'AFYA' | 'TEHAMA' | 'AJIRA' | 'BURUDANI' | 'MICHEZO'
+  category?: 'ALL' | 'HABARI' | 'AFYA' | 'TEHAMA' | 'AJIRA' | 'BURUDANI' | 'MICHEZO'
 }
 
 export default function RecentNews({ category = 'ALL' }: RecentNewsProps) {
@@ -67,8 +67,8 @@ export default function RecentNews({ category = 'ALL' }: RecentNewsProps) {
     setLoading(true)
     try {
       const url = category === 'ALL' 
-        ? `/api/article?page=${page}`
-        : `/api/article?page=${page}&category=${category}`
+        ? `/api/article?page=${page}&isPublic=true`
+        : `/api/article?page=${page}&category=${category}&isPublic=true`
       const response = await fetch(url)
       const data = await response.json()
       setArticles(data.articles)
@@ -82,10 +82,20 @@ export default function RecentNews({ category = 'ALL' }: RecentNewsProps) {
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
-
+if (articles.length === 0) {
+  return (
+    <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg shadow-sm h-screen">
+      <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2" />
+      </svg>
+      <h3 className="text-xl font-semibold text-gray-900 mb-2">No Articles Found</h3>
+      <p className="text-gray-600">There are currently no articles available in this category.</p>
+    </div>
+  )
+}
   const NewsCardSkeleton = ({ isFirst = false }) => (
     <div className="flex flex-col">
-      <div className="relative h-62 overflow-hidden rounded-sm mt-5">
+      <div className="relative h-62 overflow-hidden rounded-sm mt-5 bg-white/90">
         <Skeleton className="w-full h-full" />
         <div className="absolute bottom-4 right-4">
           <Skeleton className="w-16 h-16 rounded-md" />
@@ -118,30 +128,34 @@ export default function RecentNews({ category = 'ALL' }: RecentNewsProps) {
               </>
             ) : articles.length > 0 && (
               <>
-                <div className="md:col-span-2">
-                  <NewsCardComp
-                    key={articles[0].id}
-                    id={articles[0].id}
-                    day={articles[0].day}
-                    month={articles[0].month}
-                    title={articles[0].title}
-                    image={articles[0].image}
-                    pageName={articles[0].category}
-                    isFirst={true}
-                  />
-                </div>
-                <div className="md:col-span-1">
-                  <NewsCardComp
-                    key={articles[1].id}
-                    id={articles[1].id}
-                    day={articles[1].day}
-                    month={articles[1].month}
-                    title={articles[1].title}
-                    image={articles[1].image}
-                    pageName={articles[1].category}
-                    isFirst={false}
-                  />
-                </div>
+                {articles[0] && (
+                  <div className="md:col-span-2">
+                    <NewsCardComp
+                      key={articles[0].id}
+                      id={articles[0].id}
+                      day={articles[0].day}
+                      month={articles[0].month}
+                      title={articles[0].title}
+                      image={articles[0].image}
+                      pageName={articles[0].category}
+                      isFirst={true}
+                    />
+                  </div>
+                )}
+                {articles[1] && (
+                  <div className="md:col-span-1">
+                    <NewsCardComp
+                      key={articles[1].id}
+                      id={articles[1].id}
+                      day={articles[1].day}
+                      month={articles[1].month}
+                      title={articles[1].title}
+                      image={articles[1].image}
+                      pageName={articles[1].category}
+                      isFirst={false}
+                    />
+                  </div>
+                )}
                 
                 {articles.slice(2, isMobile ? 4 : articles.length).map((article) => (
                   <NewsCardComp

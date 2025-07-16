@@ -80,7 +80,7 @@ model Article {
 
 
 enum CategoryType {
-  KIMATAIFA
+  HABARI
   AFYA
   TEHAMA
   AJIRA
@@ -106,4 +106,14 @@ model NotificationDelivery{
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 
+}
+
+
+model Scraper{
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  status String
+  category String
+  last_scrape DateTime
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
 }

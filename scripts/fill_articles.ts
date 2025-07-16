@@ -4,12 +4,12 @@ const prisma = new PrismaClient();
 
 // Sample articles based on authentic Tanzanian Swahili news sources
 const articles = [
-  // KIMATAIFA (International)
+  // HABARI (International)
   {
     title: "Rais Samia amhudhuria mkutano wa viongozi wa Afrika Mashariki",
     content: "DAR ES SALAAM - Rais wa Jamhuri ya Muungano wa Tanzania, Samia Suluhu Hassan, amefika Geneva, Switzerland, kushuhudia mkutano wa viongozi wa Afrika Mashariki. Mkutano huu unalenga kujadili masuala ya ushirikiano wa kikanda na maendeleo ya uchumi. Rais Samia amesema Tanzania iko tayari kuongoza mchakato wa uongozi wa kanda ya Afrika Mashariki katika miaka ijayo. Mkutano huu umezungumzia pia masuala ya ufugaji wa amani na utulivu katika eneo la Afrika Mashariki. Viongozi wamelazimika kukubaliana kuhusu mipango ya pamoja ya kukabiliana na matatizo ya hali ya hewa.",
     image: "https://images.unsplash.com/photo-1541872703-74c5e44368f9?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "9",
     month: "Julai",
     status: "published",
@@ -18,10 +18,10 @@ const articles = [
     ArticleSource: "Mwananchi"
   },
   {
-    title: "Ushirikiano wa kimataifa kuzindua mradi wa barabara mpya",
-    content: "DODOMA - Serikali ya Tanzania imesaini mkataba wa kimataifa kuzindua mradi wa ujenzi wa barabara mpya itakayounganisha Tanzania na nchi jirani. Mradi huu utatekelezwa kwa ushirikiano wa Benki ya Dunia na mashirika mengine ya kimataifa. Waziri wa Uchukuzi amesema mradi huu utasaidia kuongeza biashara ya kimataifa na kuboresha mazingira ya kazi. Barabara hiyo itakuwa na urefu wa kilomita 450 na itaunganisha mikoa mingi ya nchi. Kazi ya ujenzi inaanza mwezi ujao na itachukua miaka miwili kukamilika.",
+    title: "Ushirikiano wa HABARI kuzindua mradi wa barabara mpya",
+    content: "DODOMA - Serikali ya Tanzania imesaini mkataba wa HABARI kuzindua mradi wa ujenzi wa barabara mpya itakayounganisha Tanzania na nchi jirani. Mradi huu utatekelezwa kwa ushirikiano wa Benki ya Dunia na mashirika mengine ya HABARI. Waziri wa Uchukuzi amesema mradi huu utasaidia kuongeza biashara ya HABARI na kuboresha mazingira ya kazi. Barabara hiyo itakuwa na urefu wa kilomita 450 na itaunganisha mikoa mingi ya nchi. Kazi ya ujenzi inaanza mwezi ujao na itachukua miaka miwili kukamilika.",
     image: "https://images.unsplash.com/photo-1590736969955-71cc94901144?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "8",
     month: "Julai",
     status: "published",
@@ -33,7 +33,7 @@ const articles = [
     title: "Wafuasi wa kidini kutoka nje ya nchi watembelea Tanzania",
     content: "MWANZA - Kikundi cha wafuasi wa kidini kutoka nchi mbalimbali za Afrika walifika Tanzania kwa ziara ya kijamii. Wafuasi hao walikuja kushiriki katika sherehe za kijamii na kujifunza utamaduni wa Kitanzania. Mkuu wa Mkoa wa Mwanza amewapokea wageni hao na kuwaahidi usalama wote. Wageni hao wametoa haba kwa jumuiya za kijamii na kutoa mzaha wa fedha kwa miradi ya kijamii. Ziara hii inaaminika itaongeza uhusiano wa kijamii kati ya Tanzania na nchi nyingine za Afrika.",
     image: "https://images.unsplash.com/photo-1521295121783-8a321d551ad2?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "7",
     month: "Julai",
     status: "published",
@@ -42,10 +42,10 @@ const articles = [
     ArticleSource: "Global Publishers"
   },
   {
-    title: "Mkutano wa viongozi wa EAC kuhusu biashara ya kimataifa",
-    content: "ARUSHA - Viongozi wa nchi za Jumuiya ya Afrika Mashariki (EAC) wamekutana Arusha kujadili masuala ya kuongeza biashara ya kimataifa. Mkutano huu umezungumzia jinsi ya kuondoa vikwazo vya biashara kati ya nchi za muungano. Rais Samia amewataka viongozi wengine kujitolea katika kuboresha mazingira ya biashara. Mkutano huu pia umejadili masuala ya hali ya hewa na athari zake kwa mazingira ya biashara. Viongozi wameahidi kutangaza hatua za pamoja za kuboresha biashara ndani ya wiki mbili zijazo.",
+    title: "Mkutano wa viongozi wa EAC kuhusu biashara ya HABARI",
+    content: "ARUSHA - Viongozi wa nchi za Jumuiya ya Afrika Mashariki (EAC) wamekutana Arusha kujadili masuala ya kuongeza biashara ya HABARI. Mkutano huu umezungumzia jinsi ya kuondoa vikwazo vya biashara kati ya nchi za muungano. Rais Samia amewataka viongozi wengine kujitolea katika kuboresha mazingira ya biashara. Mkutano huu pia umejadili masuala ya hali ya hewa na athari zake kwa mazingira ya biashara. Viongozi wameahidi kutangaza hatua za pamoja za kuboresha biashara ndani ya wiki mbili zijazo.",
     image: "https://images.unsplash.com/photo-1451187580459-43490279c0fa?w=800&h=600&fit=crop",
-    category: "KIMATAIFA",
+    category: "HABARI",
     day: "6",
     month: "Julai",
     status: "published",
@@ -182,8 +182,8 @@ const articles = [
 
   // BURUDANI (Entertainment)
   {
-    title: "Msanii wa muziki wa Bongo Flava apata tuzo kimataifa",
-    content: "DAR ES SALAAM - Msanii maarufu wa muziki wa Bongo Flava amepata tuzo muhimu ya kimataifa katika tamasha la muziki lililofanyika Afrika Kusini. Msanii huyu ameshinda tuzo ya 'Msanii Bora wa Muziki wa Kitamaduni' kwa mwaka huu. Tamasha hili limekuwa na washiriki kutoka Afrika nzima na linahusisha aina mbalimbali za muziki. Msanii huyu amesema ni furaha kubwa kuwakilisha Tanzania katika tamasha hili. Muziki wake umeenea kote Afrika na umepata upendo mkubwa wa mashabiki. Msanii huyu anatayarisha albamu mpya ambayo itatoka mwaka huu.",
+    title: "Msanii wa muziki wa Bongo Flava apata tuzo HABARI",
+    content: "DAR ES SALAAM - Msanii maarufu wa muziki wa Bongo Flava amepata tuzo muhimu ya HABARI katika tamasha la muziki lililofanyika Afrika Kusini. Msanii huyu ameshinda tuzo ya 'Msanii Bora wa Muziki wa Kitamaduni' kwa mwaka huu. Tamasha hili limekuwa na washiriki kutoka Afrika nzima na linahusisha aina mbalimbali za muziki. Msanii huyu amesema ni furaha kubwa kuwakilisha Tanzania katika tamasha hili. Muziki wake umeenea kote Afrika na umepata upendo mkubwa wa mashabiki. Msanii huyu anatayarisha albamu mpya ambayo itatoka mwaka huu.",
     image: "https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?w=800&h=600&fit=crop",
     category: "BURUDANI",
     day: "8",
@@ -206,8 +206,8 @@ const articles = [
     ArticleSource: "Global Publishers"
   },
   {
-    title: "Filamu ya Kitanzania yashinda tuzo za kimataifa",
-    content: "DODOMA - Filamu ya Kitanzania imeibuka shujaa katika tamasha la filamu za Afrika lililo fanyika Kenya. Filamu hii inayohusisha masuala ya kijamii imepata sifa nzuri kutoka kwa waamuzi. Mkurugenzi wa filamu amesema ni mafanikio makubwa kwa sanaa ya filamu nchini. Filamu hii imesaidia kuonyesha ustadi wa watanzania katika sanaa ya filamu. Tuzo hii itasaidia kuongeza imani ya wafuasi wa filamu za Kitanzania. Filamu hii inatarajia kuonyeshwa katika sinema za kimataifa.",
+    title: "Filamu ya Kitanzania yashinda tuzo za HABARI",
+    content: "DODOMA - Filamu ya Kitanzania imeibuka shujaa katika tamasha la filamu za Afrika lililo fanyika Kenya. Filamu hii inayohusisha masuala ya kijamii imepata sifa nzuri kutoka kwa waamuzi. Mkurugenzi wa filamu amesema ni mafanikio makubwa kwa sanaa ya filamu nchini. Filamu hii imesaidia kuonyesha ustadi wa watanzania katika sanaa ya filamu. Tuzo hii itasaidia kuongeza imani ya wafuasi wa filamu za Kitanzania. Filamu hii inatarajia kuonyeshwa katika sinema za HABARI.",
     image: "https://images.unsplash.com/photo-1518676590629-3dcbd9c5a5c9?w=800&h=600&fit=crop",
     category: "BURUDANI",
     day: "4",
@@ -221,7 +221,7 @@ const articles = [
   // MICHEZO (Sports)
   {
     title: "Timu ya mpira wa miguu ya Tanzania yajitayarisha mchuano mkuu",
-    content: "DAR ES SALAAM - Timu ya taifa ya mpira wa miguu ya Tanzania inajitayarisha kwa mchuano mkuu wa kimataifa utakaofanyika wiki ijayo. Timu hii imepata mafunzo makali chini ya mkurugenzi mpya wa kigeni. Wachezaji wamepata mafunzo ya kina ya mikakati na mbinu za kucheza. Kocha mkuu amesema timu iko tayari kwa mchuano huu mkuu. Mashabiki wa mpira wa miguu wamepewa tiketi za bei nafuu kwa kushiriki mchuano huu. Timu hii inatarajia kufanya vizuri na kuibua sifa nzuri ya mpira wa miguu wa Tanzania.",
+    content: "DAR ES SALAAM - Timu ya taifa ya mpira wa miguu ya Tanzania inajitayarisha kwa mchuano mkuu wa HABARI utakaofanyika wiki ijayo. Timu hii imepata mafunzo makali chini ya mkurugenzi mpya wa kigeni. Wachezaji wamepata mafunzo ya kina ya mikakati na mbinu za kucheza. Kocha mkuu amesema timu iko tayari kwa mchuano huu mkuu. Mashabiki wa mpira wa miguu wamepewa tiketi za bei nafuu kwa kushiriki mchuano huu. Timu hii inatarajia kufanya vizuri na kuibua sifa nzuri ya mpira wa miguu wa Tanzania.",
     image: "https://images.unsplash.com/photo-1459865264687-595d652de67e?w=800&h=600&fit=crop",
     category: "MICHEZO",
     day: "9",
@@ -244,8 +244,8 @@ const articles = [
     ArticleSource: "HabariLeo"
   },
   {
-    title: "Mchezaji wa kandanda wa Tanzania ashinda tuzo ya kimataifa",
-    content: "MWANZA - Mchezaji wa kandanda wa Tanzania ameshinda tuzo ya kimataifa katika mashindano ya Afrika yaliyofanyika Uganda. Mchezaji huyu ameshinda tuzo ya 'Mchezaji Bora wa Kike' kwa mwaka huu. Mchezaji huyu amekuwa akifanya vizuri katika mashindano ya kimataifa. Tuzo hii ni ya kwanza ya kimataifa kwa Tanzania katika mchezo wa kandanda. Mchezaji huyu amesema tuzo hii ni motisha kwa wachezaji wengine wa Tanzania. Serikali imepanga kumhudumia na kutoa msaada zaidi kwa riadha ya kandanda.",
+    title: "Mchezaji wa kandanda wa Tanzania ashinda tuzo ya HABARI",
+    content: "MWANZA - Mchezaji wa kandanda wa Tanzania ameshinda tuzo ya HABARI katika mashindano ya Afrika yaliyofanyika Uganda. Mchezaji huyu ameshinda tuzo ya 'Mchezaji Bora wa Kike' kwa mwaka huu. Mchezaji huyu amekuwa akifanya vizuri katika mashindano ya HABARI. Tuzo hii ni ya kwanza ya HABARI kwa Tanzania katika mchezo wa kandanda. Mchezaji huyu amesema tuzo hii ni motisha kwa wachezaji wengine wa Tanzania. Serikali imepanga kumhudumia na kutoa msaada zaidi kwa riadha ya kandanda.",
     image: "https://images.unsplash.com/photo-1549719386-74dfcbf7dbed?w=800&h=600&fit=crop",
     category: "MICHEZO",
     day: "5",

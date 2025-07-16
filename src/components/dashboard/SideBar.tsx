@@ -2,7 +2,7 @@
 
 import React, { useState } from 'react'
 import Link from 'next/link'
-import { Home, Users, Menu, X, Globe,User, Box } from 'lucide-react'
+import { Home, Users, Menu, X, Globe,User, Box, Bot } from 'lucide-react'
 import { Button } from "@/components/ui/button"
 import { ScrollArea } from '../ui/scroll-area'
 import { usePathname, useRouter } from 'next/navigation'
@@ -37,7 +37,7 @@ export default function SideBar() {
               { icon: Box, label: 'Managers', href: '/dashboard/managers' },
             //   { icon: MessageSquare, label: 'Message', href: '/dashboard/contact-message' },
               { icon: Users, label: 'Subscribers', href: '/dashboard/subscribers' },
-              // { icon: Settings, label: 'Settings', href: '/dashboard/settings' },
+              { icon: Bot, label: 'Scaper', href: '/dashboard/scraper' },
             ]
           }
     ]

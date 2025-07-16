@@ -178,8 +178,8 @@ export default function NewsComp() {
                       className="w-12 h-12 sm:w-15 sm:h-15 object-cover rounded-full"
                     />
                   </div>
-
-                  <Link href={`/dashboard/articles/${article.id}`} className="flex-grow text-center sm:text-left">
+                  {/* href={`/dashboard/articles/${article.id}`} */}
+                  <div  className="flex-grow text-center sm:text-left">
                     <h3 className="text-sm sm:text-md font-semibold text-gray-900 mb-1">
                       {article.title}
                     </h3>
@@ -198,7 +198,7 @@ export default function NewsComp() {
                         </span>
 
                     </div>
-                  </Link>
+                  </div>
 
                   <div className="flex-shrink-0 mt-4 sm:mt-0 sm:ml-4 space-x-2">
                     <button
