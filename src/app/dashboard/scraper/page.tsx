@@ -75,7 +75,7 @@
       }
     }
 
-    const makePublic = async (articleId: string) => {
+    const makePublic = async (article: Article) => {
       try {
         const response = await fetch('/api/article', {
           method: 'PUT',
@@ -83,12 +83,43 @@
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({
-            id: articleId,
+            id: article.id,
             isPublic: true
           }),
         })
       
         if (response.ok) {
+          // Get subscribers
+          const subscribersResponse = await fetch('/api/subscriber')
+          const subscribers = await subscribersResponse.json()
+          
+          // Prepare email content
+          const emailContent = `
+            <div style="">
+              <div class="">
+                <img src="${article.image}" alt="${article.title}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px;"/>
+                <h3 style="color: #1a202c; margin: 15px 0; font-size: large;">${article.title}</h3>
+                <p style="color: #4a5568;">${article.content.substring(0, 500)}...</p>
+                <div style="margin: 20px 0;">
+                  <a href="https://newsfy-nine.vercel.app/habari/${article.id}" style="background: #E6002D; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: large;">Read More</a>
+                </div>
+              </div>
+            </div>
+          `
+
+          // Send email
+          await fetch('/api/email', {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+              subject: `Updates: ${article.title}`,
+              content: emailContent,
+              to: subscribers.map((sub: { email: string }) => sub.email),
+            }),
+          })
+
           const messageDiv = document.createElement('div')
           messageDiv.textContent = "Article made public successfully"
           messageDiv.style.position = 'fixed'
@@ -103,8 +134,8 @@
           setTimeout(() => messageDiv.remove(), 3000)
           
           setScrapedArticles(articles => 
-            articles.map(article => 
-              article.id === articleId ? {...article, isPublic: true} : article
+            articles.map(a => 
+              a.id === article.id ? {...a, isPublic: true} : a
             )
           )
         }
@@ -183,6 +214,7 @@
                 <SelectItem value="michezo">MICHEZO</SelectItem>
                 <SelectItem value="habari">HABARI</SelectItem>
                 <SelectItem value="afya">AFYA</SelectItem>
+                <SelectItem value="tehama">TEHAMA</SelectItem>
               </SelectContent>
             </Select>
 
@@ -222,10 +254,10 @@
                   </span>
                   <div className="flex gap-2">
                     <Button
-                      onClick={() => makePublic(article.id)}
+                      onClick={() => makePublic(article)}
                       disabled={article.isPublic}
                       variant={article.isPublic ? "outline" : "default"}
-                      className="transition-all duration-200 hover:bg-green-700 cursor-pointer"
+                      className={`p-2 ${article.isPublic ? 'text-green-600 border-green-600  hover:bg-green-100' : ' border-red-600 hover:bg-red-100 text-red-600 bg-green-50'} rounded border cursor-pointer text-xs`}
                     >
                       {article.isPublic ? "Published" : "Make Public"}
                     </Button>

@@ -20,7 +20,7 @@ export default function NewsfyFooter() {
           {/* Center Section - Logo */}
           <div className="flex-shrink-0 flex items-center">
             <div className="text-white font-bold text-sm bg-black bg-opacity-20 px-2 py-1 rounded-md backdrop-blur-sm border border-white/10 hover:bg-opacity-30 transition-all duration-300 shadow-sm">
-              <span className="text-base font-extrabold tracking-tight">NEWSFY<span className="text-yellow-400">.</span></span>
+              <span className="text-base font-extrabold tracking-tight">NEWSFY<span className="text-red-600">.</span></span>
             </div>
           </div>
 

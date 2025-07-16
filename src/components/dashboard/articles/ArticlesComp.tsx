@@ -6,7 +6,6 @@ import { Skeleton } from "@/components/ui/skeleton"
 import SummaryBar from '@/components/SummaryCard'
 import { SearchFilters } from '@/components/SearchFilters'
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from '@/components/ui/alert-dialog'
-
 interface Article {
     id: string
     day: string
@@ -78,8 +77,43 @@ export default function NewsComp() {
             isPublic: !article.isPublic
           }),
         })
+        
         if (response.ok) {
-          setArticles(articles.map(a => 
+          // If making article public, send email to subscribers
+          if (!article.isPublic) {
+            // Get subscribers
+            const subscribersResponse = await fetch('/api/subscriber')
+            const subscribers = await subscribersResponse.json()
+            
+            // Prepare email content
+            const emailContent = `
+              <div style="padding: px;">
+                <div class="">
+                  <img src="${article.image}" alt="${article.title}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px;"/>
+                  <h3 style="color: #1a202c; margin: 15px 0; font-size: large;">${article.title}</h3>
+                  <p style="color: #4a5568;">${article.content.substring(0, 500)}...</p>
+                  <div style="margin: 20px 0;">
+                    <a href="https://newsfy-nine.vercel.app/habari/${article.id}" style="background: #E6002D; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px; font-size: large;">Read More</a>
+                  </div>
+                </div>
+              </div>
+            `
+
+            // Send email
+            await fetch('/api/email', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                subject: `Updates: ${article.title}`,
+                content: emailContent,
+                to: subscribers.map((sub: { email: string }) => sub.email),
+              }),
+            })
+          }
+
+          setArticles(articles.map(a =>
             a.id === article.id ? { ...a, isPublic: !a.isPublic } : a
           ))
         }

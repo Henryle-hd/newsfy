@@ -12,6 +12,7 @@ interface Stats {
   articles: {
     current: number
     previous: number
+    totalArticle:number
     percentChange: string
   }
   subscribers: {
@@ -78,7 +79,7 @@ export default function Dashboard() {
   const statsConfig = data ? [
     {
       label: "Articles",
-      value: data.stats.articles.current.toString(),
+      value: data.stats.articles.totalArticle.toString(),
       color: "#3b82f6",
       percent: data.stats.articles.percentChange,
       icon: Target,

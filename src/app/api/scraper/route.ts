@@ -4,6 +4,7 @@
   import * as cheerio from "cheerio";
   import { DateTime } from "luxon";
   import { PrismaClient } from "@prisma/client";
+  import tehamaNews from "@/lib/tehama";
 
   const prisma = new PrismaClient();
 
@@ -145,12 +146,12 @@
     console.log(`Getting last scrape for category: ${category}`);
     const last = await prisma.scraper.findFirst({
       where: { category },
-      orderBy: { last_scrape: "asc" },
+      orderBy: { last_scrape: "desc" },
     });
     return last?.last_scrape ? DateTime.fromJSDate(last.last_scrape).toISO() : null;
   }
 
-  async function getNewsByCategory(category: string | null = null) {
+  async function getNewsByCategory(category: string | undefined = undefined) {
     console.log(`Starting news fetch for category: ${category}`);
     const baseUrl = "https://globalpublishers.co.tz";
     const categories: Record<string, string> = {
@@ -159,6 +160,7 @@
       michezo: `${baseUrl}/category/michezo/`,
       habari: `${baseUrl}/category/habari/`,
       afya: `${baseUrl}/category/afya/`,
+      tehama: "https://www.mawasiliano.go.tz/news"
     };
 
     interface NewsItem {
@@ -189,7 +191,21 @@
       if (!url) continue;
       console.log(`Processing category: ${cat}`);
       const lastScrapeForCat = await getLastScrape(cat);
-      const news = await scrapeCategory(url, lastScrapeForCat);
+
+      let news;
+      if (cat.toLowerCase() === 'tehama') {
+        news = await tehamaNews(url, lastScrapeForCat);
+        news = news.map(article => ({
+          ...article,
+          isPublic: false,
+          status: "SCRAPED",
+          views: 0,
+          likes: 0
+        }));
+      } else {
+        news = await scrapeCategory(url, lastScrapeForCat);
+      }
+      
       allNews.push(...news);
     }
 
@@ -253,7 +269,7 @@
       console.log("Saving scrape history");
       const now = new Date();
       const categoriesScraped = category === "all"
-        ? ["ajira", "burudani", "michezo", "habari","afya"]
+        ? ["ajira", "burudani", "michezo", "habari", "afya", "tehama"]
         : [category];
 
       const scrapeHistories = [];

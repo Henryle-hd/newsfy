@@ -2,6 +2,7 @@
   import {prisma} from "@/lib/prisma";
   import { getServerSession } from "next-auth";
   import { authOptions } from "@/lib/auth";
+  import sendEmail from "@/lib/email";
 
   // GET all articles
   export async function GET(req: Request) {
@@ -61,7 +62,6 @@
         })
       ]);
 
-      // console.log(articles)
       return NextResponse.json({
         articles,
         totalPages: Math.ceil(total / limit),
@@ -98,6 +98,29 @@
         },
       });
 
+      if (isPublic) {
+        const subscribers = await prisma.subscriber.findMany();
+        const emailContent = `
+          <div style="">
+            <div class="">
+              <img src="${image}" alt="${title}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px;"/>
+              <h3 style="color: #1a202c; margin: 15px 0; font-size: large;">${title}</h3>
+              <p style="color: #4a5568;">${content.substring(0, 600)}...</p>
+              <div style="margin: 20px 0;">
+                <a href="https://newsfy-nine.vercel.app/habari/${article.id}" style="background: #E6002D; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Read More</a>
+              </div>
+            </div>
+          </div>
+        `;
+      
+        await sendEmail(
+          `Updates: ${title}`,
+          emailContent,
+          subscribers.map(sub => sub.email),
+          "Newsfy"
+        );
+      }
+
       return NextResponse.json(article);
     } catch (error) {
       console.log(error)
@@ -111,6 +134,10 @@
       const session = await getServerSession(authOptions);
       const body = await req.json();
       const { id, title, content, image, day, month, category, status, isPublic, createdByBot, ArticleSource, views, likes } = body;
+
+      // const existingArticle = await prisma.article.findUnique({
+      //   where: { id }
+      // });
 
       if (views !== undefined || likes !== undefined) {
         const article = await prisma.article.update({
@@ -127,7 +154,6 @@
       const article = await prisma.article.update({
         where: {
           id: id,
-          // userid: session.user.id, // Ensure user owns the article
         },
         data: {
           title,
@@ -143,12 +169,35 @@
         },
       });
 
+      // if (isPublic && existingArticle?.isPublic === false) {
+      //   const subscribers = await prisma.subscriber.findMany();
+      //   const emailContent = `
+      //     <div style="p">
+      //       <div class="">
+      //         <img src="${image}" alt="${title}" style="width: 100%; max-height: 300px; object-fit: cover; border-radius: 8px;"/>
+      //         <h3 style="color: #1a202c; margin: 15px 0;">${title}</h3>
+      //         <p style="color: #4a5568;">${existingArticle.content.substring(0, 500)}...</p>
+      //         <div style="margin: 20px 0;">
+      //           <a href="https://newsfy-nine.vercel.app/habari/${article.id}" style="background: #E6002D; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Read More</a>
+      //         </div>
+      //       </div>
+      //     </div>
+      //   `;
+      //   await sendEmail(
+      //     `Updates: ${title}`,
+      //     emailContent,
+      //     subscribers.map(sub => sub.email),
+      //     "Newsfy"
+      //   );
+      // }
+
       return NextResponse.json(article);
     } catch (error) {
       console.log(error)
       return NextResponse.json({ error: "Error updating article" }, { status: 500 });
     }
   }
+
   // DELETE article
   export async function DELETE(req: Request) {
     try {
@@ -167,7 +216,6 @@
       const article = await prisma.article.delete({
         where: {
           id: id,
-          // userid: session.user.id, // Ensure user owns the article
         },
       });
 

@@ -24,6 +24,8 @@
           }
         }
       });
+      
+      const totalArticle= await prisma.article.count()
 
       const previousArticles = await prisma.article.count({
         where: {
@@ -155,6 +157,7 @@
       return NextResponse.json({
         stats: {
           articles: {
+            totalArticle,
             current: currentArticles,
             previous: previousArticles,
             percentChange: calculatePercentChange(currentArticles, previousArticles)

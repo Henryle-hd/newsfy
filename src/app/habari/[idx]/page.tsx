@@ -150,7 +150,7 @@ export default async function Page({ params }: { params: Promise<{ idx: string }
   }
 
   const monthWord = months[Number(article.month) as keyof typeof months] || article.month || ''
-  const day = Number(article.day) < 10 ? `0${article.day}` : article.day
+  const day = Number(article.day) < 10 ? `${article.day}` : article.day
 
   // const handleLikeClick = async () => {
   //   const updatedArticle = await updateArticleLikes(article);

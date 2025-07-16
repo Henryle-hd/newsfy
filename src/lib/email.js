@@ -25,15 +25,15 @@ const htmlTemplate = (title, content) => `
           .comment-author { font-weight: bold; color: #1a202c; }
           .comment-text { color: #4a5568; margin-top: 0.5rem; }
           @media only screen and (max-width: 600px) {
-              .container { margin: 10px; }
-              .content { padding: 1rem; }
+              .container { margin: 2px; }
+              .content { padding: 0.5rem; }
           }
       </style>
     </head>
     <body>
       <div class="container">
           <div class="header">
-              <img src="https://newsfy-nine.vercel.app/logo.jpg" alt="Newsfy Logo" style="max-width: 100px; border-radius: 50%;"/>
+              <img src="https://newsfy-nine.vercel.app/logo.jpg" alt="Newsfy Logo" style="max-width: 40px; border-radius: 50%;"/>
           </div>
           <div class="content">
               ${content}

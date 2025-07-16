@@ -82,7 +82,7 @@ export default function RecentNews({ category = 'ALL' }: RecentNewsProps) {
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
-if (articles.length === 0) {
+if (!loading && articles.length === 0) {
   return (
     <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg shadow-sm h-screen">
       <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -95,7 +95,7 @@ if (articles.length === 0) {
 }
   const NewsCardSkeleton = ({ isFirst = false }) => (
     <div className="flex flex-col">
-      <div className="relative h-62 overflow-hidden rounded-sm mt-5 bg-white/90">
+      <div className="relative h-62 overflow-hidden rounded-sm mt-5 bg-white/50">
         <Skeleton className="w-full h-full" />
         <div className="absolute bottom-4 right-4">
           <Skeleton className="w-16 h-16 rounded-md" />
