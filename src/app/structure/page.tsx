@@ -1,4 +1,10 @@
 import React from "react";
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: 'Project Structure - Newsfy',
+  description: 'Technical details, setup instructions, and project structure documentation for the Newsfy application.',
+};
 
 // Project technical details
 const techStack = {
@@ -27,6 +33,19 @@ const techStack = {
       { name: "Postman", usage: "API testing" },
   ]
 };
+
+// Project setup commands
+const setupCommands = [
+  { name: "Git Clone & Install", commands: [
+    "git pull origin main",
+    "npm install"
+  ]},
+  { name: "Prisma Setup", commands: [
+    "npx prisma generate",
+    "npx prisma db push",
+    "npx prisma studio"
+  ]}
+];
 
 // Learning resources
 const resources = [
@@ -108,6 +127,25 @@ const structure = [
 },
 ];
 
+function renderSetupCommands(commands: Array<{ name: string; commands: string[] }>) {
+  return (
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+          {commands.map((item) => (
+              <div key={item.name} className="bg-white p-6 rounded-md shadow-sm">
+                  <h3 className="text-lg font-bold text-gray-900 mb-4">{item.name}</h3>
+                  <div className="bg-gray-100 p-4 rounded-md">
+                      {item.commands.map((cmd, index) => (
+                          <code key={index} className="block font-mono text-sm text-gray-800 mb-2">
+                              $ {cmd}
+                          </code>
+                      ))}
+                  </div>
+              </div>
+          ))}
+      </div>
+  );
+}
+
 function renderTechStack(stack: Record<string, Array<{ name: string; usage: string }>>) {
   return (
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
@@ -184,6 +222,11 @@ export default function StructurePage() {
           <div className="max-w-7xl mx-auto">
               <h1 className="text-3xl font-bold text-gray-900 mb-8 text-center">Project Structure & Technical Details</h1>
                 
+              <section className="mb-12">
+                  <h2 className="text-2xl font-bold text-gray-900 mb-6">Setup Commands</h2>
+                  {renderSetupCommands(setupCommands)}
+              </section>
+
               <section className="mb-12">
                   <h2 className="text-2xl font-bold text-gray-900 mb-6">Technology Stack</h2>
                   {renderTechStack(techStack)}
