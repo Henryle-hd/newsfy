@@ -1,6 +1,6 @@
-  "use client"
+"use client"
 
-import { useState, useEffect } from 'react'
+import { useState, useEffect, useRef } from 'react'
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
@@ -8,7 +8,7 @@ import { Switch } from "@/components/ui/switch"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Separator } from "@/components/ui/separator"
-import { AlertCircle, Settings, Clock, Globe, Bot } from "lucide-react"
+import { AlertCircle, Settings, Clock, Globe, Bot, X } from "lucide-react"
 
 interface Article {
   id: string
@@ -65,11 +65,23 @@ export default function ScraperPage() {
   const [settingsLoading, setSettingsLoading] = useState(false)
   const [showSettings, setShowSettings] = useState(false)
   const [autoScrapeStatus, setAutoScrapeStatus] = useState<AutoScrapeStatus | null>(null)
+  
+  // AbortController ref to handle request cancellation
+  const abortControllerRef = useRef<AbortController | null>(null)
 
   // Load scraper settings on component mount
   useEffect(() => {
     loadScraperSettings()
     checkAutoScrapeStatus()
+  }, [])
+
+  // Cleanup function to abort requests on unmount
+  useEffect(() => {
+    return () => {
+      if (abortControllerRef.current) {
+        abortControllerRef.current.abort()
+      }
+    }
   }, [])
 
   const loadScraperSettings = async () => {
@@ -126,12 +138,17 @@ export default function ScraperPage() {
   const startScraping = async () => {
     try {
       setLoading(true)
+      
+      // Create new AbortController for this request
+      abortControllerRef.current = new AbortController()
+      
       const response = await fetch('/api/scraper', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify({ category: selectedCategory }),
+        signal: abortControllerRef.current.signal
       })
     
       const data = await response.json()
@@ -141,18 +158,36 @@ export default function ScraperPage() {
       } else {
         showToast("Failed to scrape articles", "error")
       }
-    } catch (error) {
-      console.log(error)
-      showToast("Failed to scrape articles", "error")
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        showToast("Scraping cancelled", "info")
+      } else {
+        console.log(error)
+        showToast("Failed to scrape articles", "error")
+      }
     } finally {
       setLoading(false)
+      abortControllerRef.current = null
     }
+  }
+
+  const cancelScraping = () => {
+    if (abortControllerRef.current) {
+      abortControllerRef.current.abort()
+    }
+    setLoading(false)
   }
 
   const executeAutoScrape = async () => {
     try {
       setLoading(true)
-      const response = await fetch('/api/scraper?action=execute')
+      
+      // Create new AbortController for this request
+      abortControllerRef.current = new AbortController()
+      
+      const response = await fetch('/api/scraper?action=execute', {
+        signal: abortControllerRef.current.signal
+      })
       const data = await response.json()
       
       if (data.status === "success") {
@@ -164,11 +199,16 @@ export default function ScraperPage() {
       } else {
         showToast("Auto scrape failed", "error")
       }
-    } catch (error) {
-      console.error("Auto scrape failed:", error)
-      showToast("Auto scrape failed", "error")
+    } catch (error: any) {
+      if (error.name === 'AbortError') {
+        showToast("Auto scrape cancelled", "info")
+      } else {
+        console.error("Auto scrape failed:", error)
+        showToast("Auto scrape failed", "error")
+      }
     } finally {
       setLoading(false)
+      abortControllerRef.current = null
     }
   }
 
@@ -194,7 +234,7 @@ export default function ScraperPage() {
         messageDiv.style.backgroundColor = '#ef4444'
         break
       case 'info':
-        messageDiv.style.backgroundColor = '#3b82f6'
+        messageDiv.style.backgroundColor = '#FFFF11'
         break
     }
     
@@ -421,7 +461,7 @@ export default function ScraperPage() {
                   <span className="text-sm text-gray-600">Manual scraping mode enabled</span>
                 </div>
                 
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4 items-center flex-wrap">
                   <Select value={selectedCategory} onValueChange={setSelectedCategory}>
                     <SelectTrigger className="w-[250px]">
                       <SelectValue placeholder="Select category" />
@@ -440,17 +480,18 @@ export default function ScraperPage() {
                   <Button 
                     onClick={startScraping} 
                     disabled={loading}
-                    className="px-6 py-2 transition-all duration-200 hover:scale-105"
+                    className="px-6 py-2 transition-all duration-200 hover:scale-105 rounded-sm shadow-none"
                   >
                     {loading ? "Scraping..." : "Start Scraping"}
                   </Button>
 
                   {loading && (
                     <Button 
-                      onClick={() => setLoading(false)} 
-                      variant="outline"
-                      className="px-4 py-2"
+                      onClick={cancelScraping} 
+                      variant="destructive"
+                      className="px-4 py-2 flex items-center gap-2 hover:bg-red-600"
                     >
+                      <X className="w-4 h-4" />
                       Cancel
                     </Button>
                   )}
@@ -466,7 +507,7 @@ export default function ScraperPage() {
                   </span>
                 </div>
 
-                <div className="flex gap-4 items-center">
+                <div className="flex gap-4 items-center flex-wrap">
                   <Button
                     onClick={() => updateScraperSettings({ isAuto: false })}
                     variant="outline"
@@ -484,6 +525,17 @@ export default function ScraperPage() {
                   >
                     {loading ? "Running..." : "Run Now"}
                   </Button>
+
+                  {loading && (
+                    <Button
+                      onClick={cancelScraping}
+                      variant="destructive"
+                      className="px-4 py-2 flex items-center gap-2 hover:bg-red-600"
+                    >
+                      <X className="w-4 h-4" />
+                      Cancel
+                    </Button>
+                  )}
 
                   <Button
                     onClick={checkAutoScrapeStatus}
