@@ -1,6 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
-// Fix Cheerio import for ESM/TypeScript compatibility
 import * as cheerio from "cheerio";
 import { DateTime } from "luxon";
 import { PrismaClient } from "@prisma/client";

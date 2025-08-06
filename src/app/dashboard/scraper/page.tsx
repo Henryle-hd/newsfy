@@ -547,7 +547,7 @@ export default function ScraperPage() {
                   </Button> */}
                 </div>
 
-                {autoScrapeStatus?.shouldRunAutoScrape && (
+                {/* {autoScrapeStatus?.shouldRunAutoScrape && (
                   <div className="bg-yellow-50 border border-yellow-200 p-3 rounded-lg">
                     <div className="flex items-center gap-2">
                       <AlertCircle className="w-4 h-4 text-yellow-600" />
@@ -556,7 +556,7 @@ export default function ScraperPage() {
                       </span>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             )}
           </CardContent>
