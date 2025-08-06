@@ -76,9 +76,9 @@ export default function NewsNavbar() {
           {/* Search and Mobile Menu */}
           <div className="flex items-center space-x-3">
             {/* Search Icon */}
-            <button title='Search' className="text-white hover:text-yellow-300 transition-colors duration-200 hidden md:block">
+            <Link href="/search" title='Search' className="text-white hover:text-yellow-300 transition-colors duration-200 hidden md:block">
               <Search className="w-4 h-4" />
-            </button>
+            </Link>
 
             {/* Mobile menu button */}
             <button
@@ -121,7 +121,9 @@ export default function NewsNavbar() {
             {/* Mobile Search */}
             <div className="pt-3 border-t border-red-400 border-opacity-30">
               <div className="flex items-center space-x-2 px-3 py-1.5 rounded-md">
+                <Link href="/search" title='Search' className="text-white hover:text-yellow-300 transition-colors duration-200">
                 <Search className="w-4 h-4 text-white" />
+                </Link>
                 <input
                   type="text"
                   placeholder="Search news..."

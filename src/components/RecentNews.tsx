@@ -82,17 +82,74 @@ export default function RecentNews({ category = 'ALL' }: RecentNewsProps) {
   const handlePageChange = (page: number) => {
     setCurrentPage(page)
   }
-if (!loading && articles.length === 0) {
-  return (
-    <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg shadow-sm h-screen">
-      <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2" />
-      </svg>
-      <h3 className="text-xl font-semibold text-gray-900 mb-2">No Articles Found</h3>
-      <p className="text-gray-600">There are currently no articles available in this category.</p>
-    </div>
-  )
-}
+
+  const renderPagination = () => {
+    if (totalPages <= 5) {
+      return [...Array(totalPages)].map((_, index) => (
+        <button
+          key={index + 1}
+          onClick={() => handlePageChange(index + 1)}
+          disabled={loading}
+          className={`w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md ${
+            currentPage === index + 1 ? 'bg-red-600 text-white' : 'hover:bg-red-600 hover:text-gray-100'
+          } transition-colors`}
+          title={`Page ${index + 1}`}
+        >
+          {index + 1}
+        </button>
+      ))
+    }
+
+    return (
+      <>
+        <button
+          onClick={() => handlePageChange(1)}
+          disabled={loading}
+          className={`w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md ${
+            currentPage === 1 ? 'bg-red-600 text-white' : 'hover:bg-red-600 hover:text-gray-100'
+          } transition-colors`}
+          title="Page 1"
+        >
+          1
+        </button>
+        {currentPage > 3 && <span className="w-8 h-8 flex items-center justify-center">...</span>}
+        {currentPage > 2 && currentPage < totalPages - 1 && (
+          <button
+            onClick={() => handlePageChange(currentPage)}
+            disabled={loading}
+            className={`w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md bg-red-600 text-white transition-colors`}
+            title={`Page ${currentPage}`}
+          >
+            {currentPage}
+          </button>
+        )}
+        {currentPage < totalPages - 2 && <span className="w-8 h-8 flex items-center justify-center">...</span>}
+        <button
+          onClick={() => handlePageChange(totalPages)}
+          disabled={loading}
+          className={`w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md ${
+            currentPage === totalPages ? 'bg-red-600 text-white' : 'hover:bg-red-600 hover:text-gray-100'
+          } transition-colors`}
+          title={`Page ${totalPages}`}
+        >
+          {totalPages}
+        </button>
+      </>
+    )
+  }
+
+  if (!loading && articles.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center p-8 bg-gray-50 rounded-lg shadow-sm h-screen">
+        <svg className="w-16 h-16 text-gray-400 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9.5a2 2 0 00-2-2h-2" />
+        </svg>
+        <h3 className="text-xl font-semibold text-gray-900 mb-2">No Articles Found</h3>
+        <p className="text-gray-600">There are currently no articles available in this category.</p>
+      </div>
+    )
+  }
+  
   const NewsCardSkeleton = ({ isFirst = false }) => (
     <div className="flex flex-col">
       <div className="relative h-62 overflow-hidden rounded-sm mt-5 bg-white/50">
@@ -184,19 +241,7 @@ if (!loading && articles.length === 0) {
               </svg>
             </button>
             <div className="flex space-x-1">
-              {[...Array(totalPages)].map((_, index) => (
-                <button
-                  key={index + 1}
-                  onClick={() => handlePageChange(index + 1)}
-                  disabled={loading}
-                  className={`w-8 h-8 flex items-center justify-center border border-gray-300 rounded-md ${
-                    currentPage === index + 1 ? 'bg-red-600 text-white' : 'hover:bg-red-600 hover:text-gray-100'
-                  } transition-colors`}
-                  title={`Page ${index + 1}`}
-                >
-                  {index + 1}
-                </button>
-              ))}
+              {renderPagination()}
             </div>
             <button 
               onClick={() => handlePageChange(currentPage + 1)}
@@ -216,3 +261,4 @@ if (!loading && articles.length === 0) {
     </div>
   )
 }
+

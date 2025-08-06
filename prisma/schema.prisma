@@ -117,3 +117,12 @@ model Scraper{
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
 }
+
+model ScraperSetting{
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
+  isAuto      Boolean @default(false)
+  timeGap     Int @default(24)
+  makeArticlePublic Boolean @default(false)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+}
