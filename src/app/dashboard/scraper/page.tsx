@@ -296,11 +296,11 @@ export default function ScraperPage() {
     <div className="p-8 max-w-7xl mx-auto">
       <div className="mb-8">
         <div className="flex items-center justify-between mb-6">
-          <h1 className="text-3xl font-bold text-gray-800">News Scraper</h1>
+          <h1 className="text-xl font-bold text-gray-800 pb-2 flex items-center justify-center uppercase">News Scraper</h1>
           <Button
             onClick={() => setShowSettings(!showSettings)}
             variant="outline"
-            className="flex items-center gap-2"
+            className="flex items-center gap-2 bg-red-600 hover:bg-red-700 text-gray-100 hover:text-gray-50 rounded-sm"
           >
             <Settings className="w-4 h-4" />
             Settings
@@ -308,7 +308,7 @@ export default function ScraperPage() {
         </div>
 
         {showSettings && (
-          <Card className="mb-6 border-l-4 border-l-blue-500">
+          <Card className="mb-6 border-l-4 border-l-red-500 rounded-sm shadow-none">
             <CardHeader>
               <CardTitle className="flex items-center gap-2">
                 <Settings className="w-5 h-5" />
@@ -411,7 +411,7 @@ export default function ScraperPage() {
           </Card>
         )}
       
-        <Card>
+        <Card className='rounded-sm shadow-none'>
           <CardContent className="p-6">
             {!scraperSettings.isAuto ? (
               // Manual Scraping Interface
