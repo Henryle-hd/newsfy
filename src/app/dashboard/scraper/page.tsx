@@ -179,39 +179,39 @@ export default function ScraperPage() {
     setLoading(false)
   }
 
-  const executeAutoScrape = async () => {
-    try {
-      setLoading(true)
+  // const executeAutoScrape = async () => {
+  //   try {
+  //     setLoading(true)
       
-      // Create new AbortController for this request
-      abortControllerRef.current = new AbortController()
+  //     // Create new AbortController for this request
+  //     abortControllerRef.current = new AbortController()
       
-      const response = await fetch('/api/scraper?action=execute', {
-        signal: abortControllerRef.current.signal
-      })
-      const data = await response.json()
+  //     const response = await fetch('/api/scraper?action=execute', {
+  //       signal: abortControllerRef.current.signal
+  //     })
+  //     const data = await response.json()
       
-      if (data.status === "success") {
-        setScrapedArticles(data.articles || [])
-        showToast(`Auto scrape completed: ${data.total_articles} articles`, "success")
-        checkAutoScrapeStatus() // Refresh status
-      } else if (data.status === "skipped") {
-        showToast("Auto scrape conditions not met", "info")
-      } else {
-        showToast("Auto scrape failed", "error")
-      }
-    } catch (error: any) {
-      if (error.name === 'AbortError') {
-        showToast("Auto scrape cancelled", "info")
-      } else {
-        console.error("Auto scrape failed:", error)
-        showToast("Auto scrape failed", "error")
-      }
-    } finally {
-      setLoading(false)
-      abortControllerRef.current = null
-    }
-  }
+  //     if (data.status === "success") {
+  //       setScrapedArticles(data.articles || [])
+  //       showToast(`Auto scrape completed: ${data.total_articles} articles`, "success")
+  //       checkAutoScrapeStatus() // Refresh status
+  //     } else if (data.status === "skipped") {
+  //       showToast("Auto scrape conditions not met", "info")
+  //     } else {
+  //       showToast("Auto scrape failed", "error")
+  //     }
+  //   } catch (error: any) {
+  //     if (error.name === 'AbortError') {
+  //       showToast("Auto scrape cancelled", "info")
+  //     } else {
+  //       console.error("Auto scrape failed:", error)
+  //       showToast("Auto scrape failed", "error")
+  //     }
+  //   } finally {
+  //     setLoading(false)
+  //     abortControllerRef.current = null
+  //   }
+  // }
 
   const showToast = (message: string, type: "success" | "error" | "info") => {
     const messageDiv = document.createElement('div')
@@ -518,14 +518,14 @@ export default function ScraperPage() {
                     Turn Off Auto Scraping
                   </Button>
 
-                  <Button
+                  {/* <Button
                     onClick={executeAutoScrape}
                     disabled={loading}
                     variant="secondary"
                     className="px-6 py-2"
                   >
                     {loading ? "Running..." : "Run Now"}
-                  </Button>
+                  </Button> */}
 
                   {loading && (
                     <Button
@@ -538,13 +538,13 @@ export default function ScraperPage() {
                     </Button>
                   )}
 
-                  <Button
+                  {/* <Button
                     onClick={checkAutoScrapeStatus}
                     variant="ghost"
                     className="px-4 py-2"
                   >
                     Refresh Status
-                  </Button>
+                  </Button> */}
                 </div>
 
                 {autoScrapeStatus?.shouldRunAutoScrape && (
